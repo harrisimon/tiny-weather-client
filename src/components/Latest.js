@@ -16,16 +16,31 @@ const Latest = (props) => {
     },[])
     console.log(weather)
     let temp
+    let pressure
+    let humidity
+    let review
+    let posttime
+    
     if (weather !== null){
-        temp = <h1>{weather.temperature}</h1>
+        let time = new Date(weather.createdAt).toLocaleString('en-us')
+        temp = <h1>{weather.temperature} C</h1>
+        pressure = <h1>{weather.pressure} hpa</h1>
+        humidity = <h1>{weather.humidity} </h1>
+        posttime = <h1>{time}</h1>
+        // review = <h3>{weather.reviews[0].review}</h3>
+
     } else {
-        temp = <h1>nothing here</h1>
+        <h1>...loading</h1>
         // add in loading wheel
     }
     return(
         <>
         
         {temp}
+        {pressure}
+        {humidity}
+        {review}
+        {posttime}
          the weather
         </>
     )
