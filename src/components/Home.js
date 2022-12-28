@@ -8,7 +8,7 @@ const Home = (props) => {
 
 	return (
 		<Container as="nav">
-			<Header inverted><h2 className="reading">Tiny Weather</h2></Header>
+			<Header inverted><span className="tiny">Tiny</span> <span className="title">Weather</span></Header>
 			
 			<Latest user={user}/>
 		</Container>
