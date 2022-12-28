@@ -69,21 +69,47 @@ const Latest = (props) => {
 			{/* <Button.Group> */}
 			<div className="buttons">
 				<Button
-                    className="font"
+					className="font"
 					color="grey"
 					onClick={() => changeTempMeasure(!tempMeasure)}
 				>
 					Change Temp Measure
 				</Button>
 				<Modal
+					
 					onClose={() => setOpen(false)}
 					onOpen={() => setOpen(true)}
 					open={open}
-					trigger={<Button color="black" className="font">About this site</Button>}
+					trigger={
+						<Button color="black" className="font">
+							About this site
+						</Button>
+					}
 				>
-					<Modal.Header className="temp"><h2>About Tiny Weather</h2></Modal.Header>
-                    <Modal.Content><p>Tiny Weather is a site created by <a href="https://harrison-simon.netlify.app/">Harrison Simon</a>. The data presented on the site are gathered from a Raspberry Pi with a weather sensor which takes a reading every half hour.<br/>
-                    More features coming soon...</p></Modal.Content>
+					<Modal.Header className="temp">
+						<h2>About Tiny Weather</h2>
+					</Modal.Header>
+					<Modal.Content>
+						<p>
+							Tiny Weather is a site created by{" "}
+							<a href="https://harrison-simon.netlify.app/">
+								Harrison Simon
+							</a>
+							. The data presented on the site are gathered from a
+							Raspberry Pi with a weather sensor which takes a
+							reading every half hour.
+							<br />
+							<h3>About the readings</h3>
+							The readings are taken from a{" "}
+							<a href="https://www.adafruit.com/product/2652">
+								BME 280 sensor
+							</a>
+							. Currently the humity sensor seems to be taking
+							incorrect readings.
+							<br />
+							More features coming soon...
+						</p>
+					</Modal.Content>
 				</Modal>
 			</div>
 

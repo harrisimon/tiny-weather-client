@@ -1,6 +1,6 @@
 #root {
 	font-family: "Unbounded", cursive;
-
+	height: 100vh;
 }
 body {
 	font-family: "Unbounded", cursive;
@@ -26,6 +26,10 @@ h1 {
 h2 {
 	font-family: "Unbounded", cursive;
 }
+h3 {
+	font-family: "Unbounded", cursive;
+}
+
 h4 {
 	font-family: "Unbounded", cursive;
 	margin-bottom: 0;
