@@ -20,14 +20,16 @@ nav.ui.container .ui.header {
 }
 h1 {
   font-family: 'Unbounded', cursive;
-  font-size: 8rem;
 }
 h4 {
   font-family: 'Unbounded', cursive;
 }
 p {
-  
+  /* font-size: 2rem; */
   font-family: 'Unbounded', cursive;
+}
+.temp {
+  font-size: 4rem;
 }
 .reading{
   font-family: 'Unbounded', cursive;

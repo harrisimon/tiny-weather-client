@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Container, Grid, Header } from "semantic-ui-react"
+import { Button, Container, Grid, Header } from "semantic-ui-react"
 
 const Latest = (props) => {
 	const { user } = props
+    const [tempMeasure,changeTempMeasure] = useState(true)
 
 	const [weather, setWeather] = useState(null)
 	useEffect(() => {
@@ -21,9 +22,15 @@ const Latest = (props) => {
 
 	if (weather !== null) {
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
-		temp = <p>{weather.temperature} C</p>
-		pressure = <p>{weather.pressure} hpa</p>
-		humidity = <p>{weather.humidity} humidity</p>
+        if (tempMeasure == true){
+            
+            temp = <p className="temp">{(Math.round(weather.temperature* (9/5) + 32))} F</p>
+        } else {
+            
+            temp = <p className="temp">{weather.temperature} C</p>
+        }
+		pressure = <p>{Math.round(weather.pressure * 100)/100} hpa</p>
+		humidity = <p>{Math.floor(weather.humidity * 100)/100}</p>
 		posttime = <p>{time}</p>
 		// review = <h3>{weather.reviews[0].review}</h3>
 	} else {
@@ -40,9 +47,11 @@ const Latest = (props) => {
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Column width={8}>
+                    <h4>Pressure</h4>
 					<div className="reading">{pressure}</div>
 				</Grid.Column>
 				<Grid.Column widescreen={8}>
+                    <h4>Humidity</h4>
 					<div className="reading">{humidity}</div>
 				</Grid.Column>
 				<Grid.Row>
@@ -56,6 +65,8 @@ const Latest = (props) => {
 
 				</Grid.Row>
 			</Grid>
+
+            <Button onClick={() => changeTempMeasure(!tempMeasure)}>Change Temp Measure</Button>
 		</Container>
 	)
 }
