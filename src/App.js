@@ -2,6 +2,7 @@
 import React, { useState, Fragment } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
+import { Segment } from 'semantic-ui-react'
 
 // import AuthenticatedRoute from './components/shared/AuthenticatedRoute'
 import AutoDismissAlert from './components/shared/AutoDismissAlert/AutoDismissAlert'
@@ -12,7 +13,8 @@ import SignUp from './components/auth/SignUp'
 import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
-import Latest from './components/Latest'
+import 'semantic-ui-css/semantic.min.css'
+
 
 
 const App = () => {
@@ -43,8 +45,10 @@ const App = () => {
 	}
 
 		return (
+			<Segment inverted vertical textAlign="center">
+
 			<Fragment>
-				<Header user={user} />
+				{/* <Header user={user} /> */}
 				<Routes>
 					<Route path='/' element={<Home msgAlert={msgAlert} user={user} />} />
 					<Route
@@ -82,6 +86,7 @@ const App = () => {
 					/>
 				))}
 			</Fragment>
+			</Segment>
 		)
 }
 
