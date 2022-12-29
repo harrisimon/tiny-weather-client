@@ -32,7 +32,7 @@ const Latest = (props) => {
 		} else {
 			temp = <p className="temp">{weather.temperature} C</p>
 		}
-		pressure = <p>{Math.round(weather.pressure * 100) / 100} hpa</p>
+		pressure = Math.round(weather.pressure * 100) / 100
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
 		posttime = <p>{time}</p>
 		// review = <h3>{weather.reviews[0].review}</h3>
@@ -51,7 +51,7 @@ const Latest = (props) => {
 				</Grid.Row>
 				<Grid.Column width={8}>
 					<h4>Pressure</h4>
-					<div className="reading">{pressure}</div>
+					<div className="reading">{pressure} hPa</div>
 				</Grid.Column>
 				<Grid.Column widescreen={8}>
 					<h4>Humidity</h4>

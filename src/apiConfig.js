@@ -2,7 +2,7 @@ let apiUrl
 const apiUrls = {
     // YOU MUST CHANGE PRODUCTION URL WHEN DEPLOYING
 	production: 'https://tinyweather.fly.dev',
-	development: 'https://tinyweather.fly.dev',
+	development: 'http://localhost:8000',
 }
 
 if (window.location.hostname === 'localhost') {
