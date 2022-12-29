@@ -104,3 +104,19 @@ p {
 .ui.modal>.header:not(.ui){
 	font-family: 'Unbounded', cursive;
 }
+.sign-in {
+    display: flex;
+    justify-content: flex-end;
+	margin-bottom: 8px;
+}
+.user-buttons {
+	display: flex;
+	flex-direction: column;
+}
+.ui.huge.button, .ui.huge.buttons .button, .ui.huge.buttons .or {
+	font-family: 'Unbounded', cursive;
+
+	margin: 1rem;
+	align-items: center;
+	text-align: center;
+}

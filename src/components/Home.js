@@ -1,16 +1,19 @@
-import { Container, Segment, Grid, Header } from "semantic-ui-react"
+import { Container, Header, Icon, Button } from "semantic-ui-react"
 import Latest from "./Latest"
-
+import UserBar from "./shared/UserBar"
 
 const Home = (props) => {
 	const { msgAlert, user } = props
-	console.log('props in home', props)
+	console.log("props in home", props)
 
 	return (
 		<Container as="nav">
-			<Header inverted><span className="tiny">Tiny</span> <span className="title">Weather</span></Header>
+
+			<UserBar
 			
-			<Latest user={user}/>
+			/>
+
+			<Latest user={user} msgAlert={msgAlert} />
 		</Container>
 	)
 }
