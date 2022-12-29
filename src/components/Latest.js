@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Button, Container, Grid, Header, Modal, Card } from "semantic-ui-react"
+import { Button, Container, Grid, Header, Modal, Card, Form } from "semantic-ui-react"
+import TextareaCounter from 'react-textarea-counter';
 
 const Latest = (props) => {
 	const { user } = props
@@ -8,10 +9,12 @@ const Latest = (props) => {
 
 	const [weather, setWeather] = useState(null)
 	const [open, setOpen] = useState(false)
+	const [openPost, setPostOpen] = useState(false)
+    const [post, setPost] = useState(null)
 	useEffect(() => {
 		getLatestWeather().then((res) => {
 			setWeather(res.data.weather[0])
-			console.log(weather)
+			
 		})
 	}, [])
 
@@ -20,7 +23,58 @@ const Latest = (props) => {
 	let humidity
 	let reviews
 	let posttime
+    let addPost
+    
+    const handleChange = (e) => {
+        
+        setPost((prevPost) =>{
+            const updatedName = e.target.name
+            let updatedValue = e.target.value
 
+            const updatedPost = {[updatedName]:updatedValue}
+            return {...prevPost, ...updatedPost}
+            
+        })
+        console.log(post)
+    }
+    if (user === null) {
+        console.log('logged in')
+        addPost =  <Modal
+        onClose={() => setPostOpen(false)}
+        onOpen={() => setPostOpen(true)}
+        open={openPost}
+        trigger ={
+        <Button color='teal'
+        className="font" >
+            Add a Post
+        </Button>
+        }
+        >
+            <Modal.Header>
+                Add a Post
+            </Modal.Header>
+            <Modal.Content>
+                <Form>
+                    <TextareaCounter 
+                    name="review"
+                    onChange={handleChange}
+                    // value={post}
+                    countLimit={140} 
+                    placeholder='A poem just came to mind...'
+                     />
+                </Form>
+            </Modal.Content>
+            <Modal.Actions>
+
+            <Button>Post</Button>
+            </Modal.Actions>
+        
+        </Modal>
+            
+        
+    } else {
+        console.log('not logged in')
+    }
 	if (weather !== null) {
 		console.log(weather)
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
@@ -37,8 +91,8 @@ const Latest = (props) => {
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
 		posttime = <p>{time}</p>
 		// reviews = weather.review[0]
-		reviews = weather.reviews.map((review) => (
-			<Card>
+		reviews = weather.reviews.map((review, index) => (
+			<Card key={index}>
 				<Card.Content>
 					<Card.Header>
 						{new Date(review.createdAt).toLocaleString("en-us")}
@@ -88,10 +142,8 @@ const Latest = (props) => {
 			</Container>
 			{/* <Button.Group> */}
 			<div className="buttons">
-                <Button color='teal'
-                className="font" >
-                    Add a Post
-                </Button>
+                {addPost}
+               
 				<Button
 					className="font"
 					color="grey"
@@ -110,7 +162,7 @@ const Latest = (props) => {
 					}
 				>
 					<Modal.Header className="temp">
-						<h2>About Tiny Weather</h2>
+						About Tiny Weather
 					</Modal.Header>
 					<Modal.Content>
 						<p>

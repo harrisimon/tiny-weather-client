@@ -101,3 +101,6 @@ p {
 .reviews {
 	margin-top: 1rem;
 }
+.ui.modal>.header:not(.ui){
+	font-family: 'Unbounded', cursive;
+}
