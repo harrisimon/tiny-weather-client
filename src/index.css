@@ -20,6 +20,7 @@ nav.ui.container .ui.header {
 .ui.modal.temp {
 	font-family: "Unbounded", cursive;
 }
+
 h1 {
 	font-family: "Unbounded", cursive;
 }
@@ -53,7 +54,7 @@ p {
 @keyframes pulse {
 	0% {
 		transform: scale(0.05);
-		color: white;
+		color: rgb(178, 248, 225);
 	}
 
 	70% {
@@ -70,7 +71,7 @@ p {
 	font-size: 3rem;
 	text-decoration: underline;
 }
-.ui.grey.button.font,
+.ui.teal.button.font, .ui.grey.button.font,
 .ui.black.button.font {
 	font-family: "Unbounded", cursive;
 	font-size: 1.5rem;
@@ -89,4 +90,14 @@ p {
 	bottom: 100px;
 	right: 0;
 	font-family: "Unbounded", cursive;
+}
+.ui.card>.content>.header:not(.ui),
+.ui.card>.content, .ui.cards>.card>.content{
+	color: black;
+	font-size: small;
+	text-align: justify;
+	font-family: 'Unbounded', cursive;
+}
+.reviews {
+	margin-top: 1rem;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Button, Container, Grid, Header, Modal } from "semantic-ui-react"
+import { Button, Container, Grid, Header, Modal, Card } from "semantic-ui-react"
 
 const Latest = (props) => {
 	const { user } = props
@@ -10,18 +10,19 @@ const Latest = (props) => {
 	const [open, setOpen] = useState(false)
 	useEffect(() => {
 		getLatestWeather().then((res) => {
-			// console.log(res.data.weather)
 			setWeather(res.data.weather[0])
+			console.log(weather)
 		})
 	}, [])
-	// console.log(weather)
+
 	let temp
 	let pressure
 	let humidity
-	let review
+	let reviews
 	let posttime
 
 	if (weather !== null) {
+		console.log(weather)
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
 		if (tempMeasure == true) {
 			temp = (
@@ -35,9 +36,23 @@ const Latest = (props) => {
 		pressure = Math.round(weather.pressure * 100) / 100
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
 		posttime = <p>{time}</p>
+		// reviews = weather.review[0]
+		reviews = weather.reviews.map((review) => (
+			<Card>
+				<Card.Content>
+					<Card.Header>
+						{new Date(review.createdAt).toLocaleString("en-us")}
+					</Card.Header>
+				</Card.Content>
+				<Card.Content className="review-text">
+					{review.review}
+				</Card.Content>
+				<Card.Content extra>by: {review.author.email}</Card.Content>
+			</Card>
+		))
 		// review = <h3>{weather.reviews[0].review}</h3>
 	} else {
-		;<h1>...loading</h1>
+		;<p>...loading</p>
 		// add in loading wheel
 	}
 	return (
@@ -63,11 +78,20 @@ const Latest = (props) => {
 
 						<div className="reading">{posttime}</div>
 					</Grid.Column>
-					<div className="reading">{review}</div>
 				</Grid.Row>
 			</Grid>
+				<h3>Posts</h3>
+			<Container className="reviews">
+				<Card.Group centered>
+					<div className="reading">{reviews}</div>
+				</Card.Group>
+			</Container>
 			{/* <Button.Group> */}
 			<div className="buttons">
+                <Button color='teal'
+                className="font" >
+                    Add a Post
+                </Button>
 				<Button
 					className="font"
 					color="grey"
@@ -76,7 +100,6 @@ const Latest = (props) => {
 					Change Temp Measure
 				</Button>
 				<Modal
-					
 					onClose={() => setOpen(false)}
 					onOpen={() => setOpen(true)}
 					open={open}
