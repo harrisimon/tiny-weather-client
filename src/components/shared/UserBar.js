@@ -1,9 +1,8 @@
-import { Container, Header, Icon, Button } from "semantic-ui-react"
+import {  Header, Button } from "semantic-ui-react"
 import { Link } from 'react-router-dom'
 
 const UserBar = (props) => {
-	const { msgAlert, user } = props
-	console.log("props in home", props)
+
 
 	return (
         <>

@@ -6,7 +6,7 @@ import { Segment } from "semantic-ui-react"
 
 // import AuthenticatedRoute from './components/shared/AuthenticatedRoute'
 import AutoDismissAlert from "./components/shared/AutoDismissAlert/AutoDismissAlert"
-import Header from "./components/shared/Header"
+// import Header from "./components/shared/Header"
 import RequireAuth from "./components/shared/RequireAuth"
 import Home from "./components/Home"
 import SignUp from "./components/auth/SignUp"
@@ -20,10 +20,9 @@ const App = () => {
 	const [user, setUser] = useState(null)
 	const [msgAlerts, setMsgAlerts] = useState([])
 
-	console.log("user in app", user)
-	console.log("message alerts", msgAlerts)
+	
 	const clearUser = () => {
-		console.log("clear user ran")
+		
 		setUser(null)
 	}
 

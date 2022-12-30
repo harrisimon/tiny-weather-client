@@ -9,15 +9,26 @@ export const getWeatherIndex = (user) => {
 }
 
 export const getWeatherReading = (user, id) => {
-    return axios({
-        method: 'GET',
-        url: apiUrl + `/weather/${id}`
-    })
+	return axios({
+		method: "GET",
+		url: apiUrl + `/weather/${id}`,
+	})
 }
 
 export const getLatestWeather = (user) => {
-    return axios({
-        method: 'GET',
-        url: apiUrl + '/latest'
-    })
+	return axios({
+		method: "GET",
+		url: apiUrl + "/latest",
+	})
+}
+
+export const submitPost = (user, id, data) => {
+	return axios({
+		method: "POST",
+		url: apiUrl + "/review/" + id,
+		data,
+		headers: {
+			Authorization: `Token token=${user.token}`,
+		},
+	})
 }

@@ -1,84 +1,99 @@
 import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Button, Container, Grid, Header, Modal, Card, Form } from "semantic-ui-react"
-import TextareaCounter from 'react-textarea-counter';
+import { Button, Container, Grid, Modal, Card, Form } from "semantic-ui-react"
+import TextareaCounter from "react-textarea-counter"
+import { submitPost } from "../api/weather"
+
 
 const Latest = (props) => {
-	const { user } = props
-	const [tempMeasure, changeTempMeasure] = useState(true)
+	const { user, msgAlert } = props
 
+
+	const [tempMeasure, changeTempMeasure] = useState(true)
 	const [weather, setWeather] = useState(null)
+    const [postList, setPostList] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [openPost, setPostOpen] = useState(false)
-    const [post, setPost] = useState(null)
+	const [post, setPost] = useState(null)
+	const [refresh, setRefresh] = useState(0)
+    let temp
+    let pressure
+    let humidity
+    let reviews
+    let posttime
+    let addPost
+    
+
 	useEffect(() => {
 		getLatestWeather().then((res) => {
 			setWeather(res.data.weather[0])
-			
+            setPostList(res.data.weather[0].reviews.slice(0).reverse())
+
 		})
-	}, [])
+	}, [refresh])
 
-	let temp
-	let pressure
-	let humidity
-	let reviews
-	let posttime
-    let addPost
+	const submit = (e) => {
+		e.preventDefault()
+        
+		submitPost(user, weather._id, post)
+			.then(setRefresh((refresh) => refresh + 1))
+			.then(setPostOpen(false))
+			.catch((error) => {
+				msgAlert({
+					heading: "Failure",
+					message: "Create Post Failure" + error,
+				})
+			})
+	}
+
     
-    const handleChange = (e) => {
+	const handleChange = (e) => {
+		// console.log("weather",weather._id)
         
-        setPost((prevPost) =>{
-            const updatedName = e.target.name
-            let updatedValue = e.target.value
+		setPost((prevPost) => {
+			const updatedName = e.target.name
+			let updatedValue = e.target.value
 
-            const updatedPost = {[updatedName]:updatedValue}
-            return {...prevPost, ...updatedPost}
-            
-        })
-        console.log(post)
-    }
-    if (user === null) {
-        console.log('logged in')
-        addPost =  <Modal
-        onClose={() => setPostOpen(false)}
-        onOpen={() => setPostOpen(true)}
-        open={openPost}
-        trigger ={
-        <Button color='teal'
-        className="font" >
-            Add a Post
-        </Button>
-        }
-        >
-            <Modal.Header>
-                Add a Post
-            </Modal.Header>
-            <Modal.Content>
-                <Form>
-                    <TextareaCounter 
-                    name="review"
-                    onChange={handleChange}
-                    // value={post}
-                    countLimit={140} 
-                    placeholder='A poem just came to mind...'
-                     />
-                </Form>
-            </Modal.Content>
-            <Modal.Actions>
-
-            <Button>Post</Button>
-            </Modal.Actions>
+			const updatedPost = { [updatedName]: updatedValue }
+			return { ...prevPost, ...updatedPost }
+		})
+	}
+	if (user !== null) {
+		addPost = (
+			<>
+				<Modal
+					onClose={() => setPostOpen(false)}
+					onOpen={() => setPostOpen(true)}
+					open={openPost}
+					trigger={
+						<Button color="teal" className="font">
+							Add a Post
+						</Button>
+					}
+				>
+					<Modal.Header>Add a Post</Modal.Header>
+					<Modal.Content>
+						<Form onSubmit={submit}>
+							<TextareaCounter
+								name="review"
+								onChange={handleChange}
+								countLimit={140}
+								placeholder="A poem just came to mind..."
+							/>
+							<Modal.Actions>
+								<Button type="submit">Post</Button>
+							</Modal.Actions>
+						</Form>
+					</Modal.Content>
+				</Modal>
+			</>
+		)
+	}
+    
+	if (weather !== null && postList !== null) {
         
-        </Modal>
-            
-        
-    } else {
-        console.log('not logged in')
-    }
-	if (weather !== null) {
-		console.log(weather)
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
-		if (tempMeasure == true) {
+		if (tempMeasure === true) {
 			temp = (
 				<p className="temp">
 					{Math.round(weather.temperature * (9 / 5) + 32)} F
@@ -91,22 +106,26 @@ const Latest = (props) => {
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
 		posttime = <p>{time}</p>
 		// reviews = weather.review[0]
-		reviews = weather.reviews.map((review, index) => (
-			<Card key={index}>
-				<Card.Content>
-					<Card.Header>
-						{new Date(review.createdAt).toLocaleString("en-us")}
-					</Card.Header>
-				</Card.Content>
-				<Card.Content className="review-text">
-					{review.review}
-				</Card.Content>
-				<Card.Content extra>by: {review.author.email}</Card.Content>
-			</Card>
-		))
+		if (weather.reviews.length >= 1) {
+			reviews = postList.map((review, index) => (
+				<Card key={index}>
+					<Card.Content>
+						<Card.Header>
+							{new Date(review.createdAt).toLocaleString("en-us")}
+						</Card.Header>
+					</Card.Content>
+					<Card.Content className="review-text">
+						{review.review}
+					</Card.Content>
+					<Card.Content extra>by: {review.author.email}</Card.Content>
+				</Card>
+			))
+		} else {
+			reviews = <p>No posts yet... sign in to leave a post</p>
+		}
 		// review = <h3>{weather.reviews[0].review}</h3>
 	} else {
-		;<p>...loading</p>
+		return <p>...loading</p>
 		// add in loading wheel
 	}
 	return (
@@ -134,16 +153,17 @@ const Latest = (props) => {
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
-				<h3>Posts</h3>
-			<Container className="reviews">
+			<h3>Posts</h3>
+
+			<div className="reviews">
 				<Card.Group centered>
 					<div className="reading">{reviews}</div>
 				</Card.Group>
-			</Container>
-			{/* <Button.Group> */}
+			</div>
+
 			<div className="buttons">
-                {addPost}
-               
+				{addPost}
+
 				<Button
 					className="font"
 					color="grey"
@@ -166,7 +186,7 @@ const Latest = (props) => {
 					</Modal.Header>
 					<Modal.Content>
 						<p>
-							Tiny Weather is a site created by{" "}
+							Tiny Weather is a site created by
 							<a href="https://harrison-simon.netlify.app/">
 								Harrison Simon
 							</a>
@@ -187,8 +207,6 @@ const Latest = (props) => {
 					</Modal.Content>
 				</Modal>
 			</div>
-
-			{/* </Button.Group> */}
 		</Container>
 	)
 }

@@ -1,12 +1,13 @@
 // import React, { Component } from 'react'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-import { signUp, signIn } from '../../api/auth'
-import messages from '../shared/AutoDismissAlert/messages'
+import { signUp, signIn } from "../../api/auth"
+import messages from "../shared/AutoDismissAlert/messages"
 
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { Form, Button, Container } from "semantic-ui-react"
+// import Form from 'react-bootstrap/Form'
+// import Button from "react-bootstrap/Button"
 
 const SignUp = (props) => {
 	// constructor(props) {
@@ -17,90 +18,105 @@ const SignUp = (props) => {
 	// 		password: '',
 	// 		passwordConfirmation: '',
 	// 	}
-	// }    
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+	// }
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
+	const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
-    const navigate = useNavigate()
+	const navigate = useNavigate()
 
 	const onSignUp = (event) => {
 		event.preventDefault()
 
 		const { msgAlert, setUser } = props
 
-        const credentials = {email, password, passwordConfirmation}
+		const credentials = { email, password, passwordConfirmation }
 
 		signUp(credentials)
 			.then(() => signIn(credentials))
 			.then((res) => setUser(res.data.user))
 			.then(() =>
 				msgAlert({
-					heading: 'Sign Up Success',
+					heading: "Sign Up Success",
 					message: messages.signUpSuccess,
-					variant: 'success',
+					
 				})
 			)
-			.then(() => navigate('/'))
+			.then(() => navigate("/"))
 			.catch((error) => {
-                setEmail('')
-                setPassword('')
-                setPasswordConfirmation('')
+				setEmail("")
+				setPassword("")
+				setPasswordConfirmation("")
 				msgAlert({
-					heading: 'Sign Up Failed with error: ' + error.message,
+					heading: "Sign Up Failed with error: " + error.message,
 					message: messages.signUpFailure,
-					variant: 'danger',
+					
 				})
 			})
 	}
 
-
-    return (
-        <div className='row'>
-            <div className='col-sm-10 col-md-8 mx-auto mt-5'>
-                <h3>Sign Up</h3>
-                <Form onSubmit={onSignUp}>
-                    <Form.Group controlId='email'>
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            required
-                            type='email'
-                            name='email'
-                            value={email}
-                            placeholder='Enter email'
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='password'>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            required
-                            name='password'
-                            value={password}
-                            type='password'
-                            placeholder='Password'
-                            onChange={e => setPassword(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='passwordConfirmation'>
-                        <Form.Label>Password Confirmation</Form.Label>
-                        <Form.Control
-                            required
-                            name='passwordConfirmation'
-                            value={passwordConfirmation}
-                            type='password'
-                            placeholder='Confirm Password'
-                            onChange={e => setPasswordConfirmation(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Button variant='primary' type='submit'>
-                        Submit
-                    </Button>
-                </Form>
-            </div>
-        </div>
-    )
-
+	return (
+		<div className="row">
+			<div className="sign">
+				<h3>Sign Up</h3>
+                <Container>
+                    <h4>Post Kindly!</h4>
+                    <p className="warning">Posts will only appear for every half hour weather reading, after the reading updates posts written will no longer appear. Please do not post any identifying information, slander, or anything generally unkind. <br/>Happy posting!</p>
+                </Container>
+                <br/>
+				<Form onSubmit={onSignUp}>
+					<Form.Group >
+						
+						<Form.Field>
+							<Form.Input
+								required
+                                label='Username'
+								name="email"
+								value={email}
+								placeholder="Enter username"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</Form.Field>
+					</Form.Group>
+					<Form.Group >
+						
+						<Form.Field>
+							<Form.Input
+                            label='Password'
+								required
+								name="password"
+								value={password}
+								type='password'
+								placeholder="Password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</Form.Field>
+					</Form.Group>
+					<Form.Group >
+						
+						<Form.Field>
+							<Form.Input
+                            label='Password Confirmation'
+								required
+                                type="password"
+								name="passwordConfirmation"
+								value={passwordConfirmation}
+								placeholder="Confirm Password"
+								onChange={(e) =>
+									setPasswordConfirmation(e.target.value)
+								}
+							/>
+						</Form.Field>
+					</Form.Group>
+                        <br/>
+					<Button  className="font" color="grey"
+                    type="submit">
+						Submit
+					</Button>
+				</Form>
+			</div>
+		</div>
+	)
 }
 
 export default SignUp

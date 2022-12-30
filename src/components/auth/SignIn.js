@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-import { signIn } from '../../api/auth'
-import messages from '../shared/AutoDismissAlert/messages'
-
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { signIn } from "../../api/auth"
+import messages from "../shared/AutoDismissAlert/messages"
+import { Button, Container, Form } from "semantic-ui-react"
+// import Form from 'react-bootstrap/Form'
+// import Button from 'react-bootstrap/Button'
 
 const SignIn = (props) => {
 	// constructor(props) {
@@ -16,10 +16,10 @@ const SignIn = (props) => {
 	// 		password: '',
 	// 	}
 	// }
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
 
-    const navigate = useNavigate()
+	const navigate = useNavigate()
 
 	// handleChange = (event) =>
 	// 	this.setState({
@@ -28,66 +28,72 @@ const SignIn = (props) => {
 
 	const onSignIn = (event) => {
 		event.preventDefault()
-        console.log('the props', props)
+		console.log("the props", props)
 		const { msgAlert, setUser } = props
 
-        const credentials = {email, password}
+		const credentials = { email, password }
 
 		signIn(credentials)
 			.then((res) => setUser(res.data.user))
 			.then(() =>
 				msgAlert({
-					heading: 'Sign In Success',
+					heading: "Sign In Success",
 					message: messages.signInSuccess,
-					variant: 'success',
+					variant: "success",
 				})
 			)
-			.then(() => navigate('/'))
+			.then(() => navigate("/"))
 			.catch((error) => {
-                setEmail('')
-                setPassword('')
+				setEmail("")
+				setPassword("")
 				msgAlert({
-					heading: 'Sign In Failed with error: ' + error.message,
+					heading: "Sign In Failed with error: " + error.message,
 					message: messages.signInFailure,
-					variant: 'danger',
+					variant: "danger",
 				})
 			})
 	}
 
-    return (
-        <div className='row'>
-            <div className='col-sm-10 col-md-8 mx-auto mt-5'>
-                <h3>Sign In</h3>
-                <Form onSubmit={onSignIn}>
-                    <Form.Group controlId='email'>
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            required
-                            type='email'
-                            name='email'
-                            value={email}
-                            placeholder='Enter email'
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='password'>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            required
-                            name='password'
-                            value={password}
-                            type='password'
-                            placeholder='Password'
-                            onChange={e => setPassword(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Button variant='primary' type='submit'>
-                        Submit
-                    </Button>
-                </Form>
-            </div>
-        </div>
-    )
+	return (
+		<Container className="sign-in-form">
+			<div className="sign">
+				<h3>Sign In</h3>
+				<Form onSubmit={onSignIn}>
+					<Form.Group>
+						<Form.Field>
+							<Form.Input
+								label="Username"
+								required
+								
+								name="email"
+								value={email}
+								placeholder="Enter email"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</Form.Field>
+					</Form.Group>
+					<Form.Group>
+						{/* <label>Password</label> */}
+						<Form.Field>
+							<Form.Input
+								required
+								label="password"
+								name="password"
+								value={password}
+								type="password"
+								placeholder="Password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</Form.Field>
+					</Form.Group>
+					<br />
+					<Button className="font" color="grey" type="submit">
+						Submit
+					</Button>
+				</Form>
+			</div>
+		</Container>
+	)
 }
 
 export default SignIn

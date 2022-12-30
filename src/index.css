@@ -1,6 +1,6 @@
 #root {
 	font-family: "Unbounded", cursive;
-	height: 90vh;
+	height: 100vh;
 }
 body {
 	font-family: "Unbounded", cursive;
@@ -87,7 +87,7 @@ p {
 .buttons {
 	position: absolute;
 	left: 0;
-	bottom: 100px;
+	bottom: 20px;
 	right: 0;
 	font-family: "Unbounded", cursive;
 }
@@ -99,7 +99,10 @@ p {
 	font-family: 'Unbounded', cursive;
 }
 .reviews {
-	margin-top: 1rem;
+	padding: 10px;
+	height: 240px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 .ui.modal>.header:not(.ui){
 	font-family: 'Unbounded', cursive;
@@ -119,4 +122,27 @@ p {
 	margin: 1rem;
 	align-items: center;
 	text-align: center;
+}
+.sign-in-form{
+	display: flex;
+	justify-content: center;
+}
+.sign {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+.ui.form .field>label{
+	display: flex;
+	color: white;
+    max-width: 100%;
+    flex-direction: column;
+    width: 200px;
+	justify-content: center;
+	align-items: center;
+}
+.warning {
+	width: auto;
+	text-align:center;
 }

@@ -1,11 +1,11 @@
 import React from "react"
 import UserBar from "../shared/UserBar"
-import { Container, Header, Icon, Button } from "semantic-ui-react"
+import { Container, Button } from "semantic-ui-react"
 import { Link } from "react-router-dom"
 
 const User = (props) => {
-	const { msgAlert, user } = props
-	let bunny
+	const { user } = props
+
 	let buttons
 	if (user === null) {
         buttons =
