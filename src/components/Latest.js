@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { getLatestWeather } from "../api/weather"
 import { Button, Container, Grid, Modal, Card, Form } from "semantic-ui-react"
 import TextareaCounter from "react-textarea-counter"
@@ -16,6 +16,7 @@ const Latest = (props) => {
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
 	const [refresh, setRefresh] = useState(0)
+    let ref = useRef()
     let temp
     let pressure
     let humidity
@@ -23,27 +24,34 @@ const Latest = (props) => {
     let posttime
     let addPost
     
-
+    
 	useEffect(() => {
-		getLatestWeather().then((res) => {
-			setWeather(res.data.weather[0])
-            setPostList(res.data.weather[0].reviews.slice(0).reverse())
-
-		})
-	}, [refresh])
+            getLatestWeather().then((res) => {
+                setWeather(res.data.weather[0])
+                setPostList(res.data.weather[0].reviews.slice(0).reverse())
+                console.log("posts",postList)
+                
+            })
+            .then(ref=false)
+            console.log("ref",ref)
+        
+	},[ref])
 
 	const submit = (e) => {
 		e.preventDefault()
         
 		submitPost(user, weather._id, post)
-			.then(setRefresh((refresh) => refresh + 1))
+            .then(ref = true)
+			// .then(setRefresh((refresh) => refresh + 1))
 			.then(setPostOpen(false))
+
 			.catch((error) => {
 				msgAlert({
 					heading: "Failure",
 					message: "Create Post Failure" + error,
 				})
 			})
+            console.log(ref)
 	}
 
     

@@ -5,6 +5,7 @@ import UserBar from "./shared/UserBar"
 const Home = (props) => {
 	const { msgAlert, user } = props
 	
+	
 
 	return (
 		<Container as="nav">

@@ -20,6 +20,12 @@ const App = () => {
 	const [user, setUser] = useState(null)
 	const [msgAlerts, setMsgAlerts] = useState([])
 
+	const appHeight = () => {
+		const doc = document.documentElement
+		doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+	}
+	window.addEventListener('resize', appHeight)
+	appHeight()
 	
 	const clearUser = () => {
 		
