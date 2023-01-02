@@ -22,18 +22,21 @@ const User = (props) => {
 				</Button>
 			</Link>
 		</>
-	} 
+	} else {
+        buttons = <Link to="/sign-out">
+        <Button size="huge" className="usr-btn">
+            Sign Out
+        </Button>
+    </Link>
+    }
+
 	return (
 		<Container as="nav">
 			<UserBar />
 			<div className="user-buttons">
 			{buttons}
 
-				<Link to="/sign-out">
-					<Button size="huge" className="usr-btn">
-						Sign Out
-					</Button>
-				</Link>
+				
 			</div>
 		</Container>
 	)

@@ -3,16 +3,17 @@
   animation: .5s ease-in-out 0s 1 light-bounce-in;
   bottom: 1rem;
   display: flex;
+  flex-direction: column;
   background-color: black;
-  margin: auto;
-  max-width: 300px;
-  position: fixed;
-  bottom: 500px;
+  padding: 15px;
+  max-width: 100vw;
+  width: 100vw;
+  top: 100px;
   z-index: 10000;
 
-  .alert-body {
-    margin-bottom: 0;
-  }
+  // .alert-body {
+  //   margin-bottom: 0;
+  // }
 }
 
 .close {

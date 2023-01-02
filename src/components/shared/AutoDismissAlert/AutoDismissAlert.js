@@ -1,5 +1,6 @@
 import React from 'react'
 import Alert from 'react-bootstrap/Alert'
+import { Message } from 'semantic-ui-react'
 
 import './AutoDismissAlert.scss'
 
@@ -13,7 +14,7 @@ class AutoDismissAlert extends React.Component {
 	}
 
 	componentDidMount() {
-		this.timeoutId = setTimeout(this.handleClose, 5000)
+		this.timeoutId = setTimeout(this.handleClose, 3000)
 	}
 
 	componentWillUnmount() {
@@ -36,7 +37,7 @@ class AutoDismissAlert extends React.Component {
 			<Alert
 				dismissible
 				show={this.state.show}
-				variant={variant}
+				variant='info'
 				onClose={this.handleClose}>
 				<div className='container'>
 					<Alert.Heading>{heading}</Alert.Heading>

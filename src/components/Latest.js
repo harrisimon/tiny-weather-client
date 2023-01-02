@@ -1,63 +1,71 @@
 import React, { useEffect, useRef, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Button, Container, Grid, Modal, Card, Form } from "semantic-ui-react"
+import {
+	Button,
+	Container,
+	Grid,
+	Modal,
+	Card,
+	Form,
+	Message,
+} from "semantic-ui-react"
 import TextareaCounter from "react-textarea-counter"
 import { submitPost } from "../api/weather"
-
 
 const Latest = (props) => {
 	const { user, msgAlert } = props
 
-
 	const [tempMeasure, changeTempMeasure] = useState(true)
 	const [weather, setWeather] = useState(null)
-    const [postList, setPostList] = useState(null)
+	const [postList, setPostList] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
-	const [refresh, setRefresh] = useState(0)
-    let ref = useRef()
-    let temp
-    let pressure
-    let humidity
-    let reviews
-    let posttime
-    let addPost
-    
-    
+	const [refresh, setRefresh] = useState(false)
+	let ref = useRef(false)
+	let temp
+	let pressure
+	let humidity
+	let reviews
+	let posttime
+	let addPost
+
+	const loadInfo = (res) => {
+		console.log("load info res reviews", res.data.weather[0].reviews)
+		setWeather(res.data.weather[0])
+		setPostList(res.data.weather[0].reviews.slice(0).reverse())
+	}
+
 	useEffect(() => {
-            getLatestWeather().then((res) => {
-                setWeather(res.data.weather[0])
-                setPostList(res.data.weather[0].reviews.slice(0).reverse())
-                console.log("posts",postList)
-                
-            })
-            .then(ref=false)
-            console.log("ref",ref)
-        
-	},[ref])
+		getLatestWeather()
+			.then((res) => {
+				// console.log("res", res.data.weather[0])
+				loadInfo(res)
+
+				// console.log("posts", postList)
+			})
+			.then(setRefresh(false))
+		// console.log("refresh useeffect", refresh)
+	}, [refresh])
 
 	const submit = (e) => {
 		e.preventDefault()
-        
-		submitPost(user, weather._id, post)
-            .then(ref = true)
-			// .then(setRefresh((refresh) => refresh + 1))
-			.then(setPostOpen(false))
 
+		submitPost(user, weather._id, post)
+			.then(setPostOpen(false))
+			.then(setRefresh(true))
+			.then("refresh submit", refresh)
 			.catch((error) => {
 				msgAlert({
 					heading: "Failure",
 					message: "Create Post Failure" + error,
 				})
 			})
-            console.log(ref)
 	}
 
-    
 	const handleChange = (e) => {
 		// console.log("weather",weather._id)
-        
+
 		setPost((prevPost) => {
 			const updatedName = e.target.name
 			let updatedValue = e.target.value
@@ -97,9 +105,8 @@ const Latest = (props) => {
 			</>
 		)
 	}
-    
+
 	if (weather !== null && postList !== null) {
-        
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
 		if (tempMeasure === true) {
 			temp = (
@@ -196,6 +203,7 @@ const Latest = (props) => {
 						<p>
 							Tiny Weather is a site created by
 							<a href="https://harrison-simon.netlify.app/">
+								{" "}
 								Harrison Simon
 							</a>
 							. The data presented on the site are gathered from a

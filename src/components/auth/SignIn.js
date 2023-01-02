@@ -67,7 +67,7 @@ const SignIn = (props) => {
 								
 								name="email"
 								value={email}
-								placeholder="Enter email"
+								placeholder="Enter username"
 								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</Form.Field>

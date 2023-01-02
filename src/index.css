@@ -1,6 +1,5 @@
 #root {
 	font-family: "Unbounded", cursive;
-	
 	width: 100vw;
 	overflow-x: hidden;
 	--app-height: 100%;
@@ -12,7 +11,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
 
 nav.ui.container .ui.header {
 	margin: 12px;
@@ -101,7 +99,7 @@ p {
 .buttons {
 	position: absolute;
 	left: 0;
-	bottom: 70px;
+	bottom: 3rem;
 	right: 0;
 	font-family: "Unbounded", cursive;
 }
