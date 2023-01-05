@@ -1,6 +1,6 @@
 import React from 'react'
 import Alert from 'react-bootstrap/Alert'
-import { Message } from 'semantic-ui-react'
+
 
 import './AutoDismissAlert.scss'
 
@@ -24,7 +24,7 @@ class AutoDismissAlert extends React.Component {
 	handleClose = () => this.setState({ show: false })
 
 	render() {
-		const { variant, heading, message, deleteAlert, id } = this.props
+		const {  heading, message, deleteAlert, id } = this.props
 
 		// Delete this alert after the fade animation time (300 ms by default)
 		if (!this.state.show) {

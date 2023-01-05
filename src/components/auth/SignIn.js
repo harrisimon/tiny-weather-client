@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {  useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { signIn } from "../../api/auth"
@@ -29,7 +29,7 @@ const SignIn = (props) => {
 	const onSignIn = (event) => {
 		event.preventDefault()
 		console.log("the props", props)
-		const { msgAlert, setUser, user } = props
+		const { msgAlert, setUser,} = props
 
 		const credentials = { email, password }
 
@@ -43,6 +43,7 @@ const SignIn = (props) => {
 				})
 			)
 			.then(() => navigate("/"))
+			
 			.catch((error) => {
 				setEmail("")
 				setPassword("")
@@ -52,9 +53,17 @@ const SignIn = (props) => {
 					variant: "danger",
 				})
 			})
-			
 	}
 
+	// useEffect(() => {
+	// 	const loggedInUser = localStorage.getItem("user");
+	// 	if (loggedInUser) {
+	// 	  const foundUser = JSON.parse(loggedInUser);
+	// 	  setUser(foundUser);
+	// 	}
+	//   }, []);
+
+	
 	return (
 		<Container className="sign-in-form">
 			<div className="sign">
@@ -65,7 +74,6 @@ const SignIn = (props) => {
 							<Form.Input
 								label="Username"
 								required
-								
 								name="email"
 								value={email}
 								placeholder="Enter username"

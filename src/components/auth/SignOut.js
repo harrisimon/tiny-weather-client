@@ -13,6 +13,7 @@ const SignOut = (props) => {
 
     const onSignOut = () => {
 		signOut(user)
+            .then(localStorage.clear())
 			.finally(() =>
 				msgAlert({
 					heading: 'Signed Out Successfully',

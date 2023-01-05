@@ -32,7 +32,7 @@ const User = (props) => {
         </Button>
     </Link>
     <Link to='/my-posts'>
-    <Button size='huge' className="usr-btn"></Button></Link>
+    <Button size='huge' className="usr-btn">My Posts</Button></Link>
         </>
     
     }

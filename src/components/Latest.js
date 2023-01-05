@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
 import {
 	Button,
@@ -7,7 +7,7 @@ import {
 	Modal,
 	Card,
 	Form,
-	Message,
+
 } from "semantic-ui-react"
 import TextareaCounter from "react-textarea-counter"
 import { submitPost } from "../api/weather"
@@ -22,7 +22,7 @@ const Latest = (props) => {
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
 	const [refresh, setRefresh] = useState(false)
-	let ref = useRef(false)
+
 	let temp
 	let pressure
 	let humidity
@@ -111,11 +111,11 @@ const Latest = (props) => {
 		if (tempMeasure === true) {
 			temp = (
 				<p className="temp">
-					{Math.round(weather.temperature * (9 / 5) + 32)} F
+					{Math.round(weather.temperature * (9 / 5) + 32)}° F
 				</p>
 			)
 		} else {
-			temp = <p className="temp">{weather.temperature} C</p>
+			temp = <p className="temp">{weather.temperature}° C</p>
 		}
 		pressure = Math.round(weather.pressure * 100) / 100
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
@@ -148,7 +148,10 @@ const Latest = (props) => {
 			<Grid>
 				<Grid.Row>
 					<Grid.Column width={16}>
+						<div className="temp-label">
+
 						<h4>Temp</h4>
+						</div>
 						<div className="reading">{temp}</div>
 					</Grid.Column>
 				</Grid.Row>
@@ -164,7 +167,7 @@ const Latest = (props) => {
 					<Grid.Column width={16}>
 						<small>The last reading was taken</small>
 
-						<div className="reading">{posttime}</div>
+						<div>{posttime}</div>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -200,7 +203,7 @@ const Latest = (props) => {
 						About Tiny Weather
 					</Modal.Header>
 					<Modal.Content>
-						<p>
+						
 							Tiny Weather is a site created by
 							<a href="https://harrison-simon.netlify.app/">
 								{" "}
@@ -219,7 +222,7 @@ const Latest = (props) => {
 							incorrect readings.
 							<br />
 							More features coming soon...
-						</p>
+						
 					</Modal.Content>
 				</Modal>
 			</div>

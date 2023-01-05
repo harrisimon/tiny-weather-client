@@ -1,5 +1,5 @@
 // import React, { Component, Fragment } from 'react'
-import React, { useState, Fragment } from "react"
+import React, { useState, Fragment, useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import { v4 as uuid } from "uuid"
 import { Segment } from "semantic-ui-react"
@@ -20,6 +20,10 @@ import "semantic-ui-css/semantic.min.css"
 const App = () => {
 	const [user, setUser] = useState(null)
 	const [msgAlerts, setMsgAlerts] = useState([])
+	
+
+	// console.log('user in app', user)
+	// console.log("local", JSON.parse(localStorage.getItem('user')))
 
 	const appHeight = () => {
 		const doc = document.documentElement
@@ -28,6 +32,23 @@ const App = () => {
 	window.addEventListener('resize', appHeight)
 	appHeight()
 	
+	useEffect(()=> {
+		if(user !== null){
+			// console.log("found user", user)
+			localStorage.setItem('user',JSON.stringify(user))
+		} 
+		else {
+			// console.log(typeof localStorage.getItem('user'))
+			setUser(JSON.parse(localStorage.getItem('user')))
+		}
+	// 	const loggedInUser = localStorage.getItem('user')
+	// 	console.log("logged in user", loggedInUser)
+	// 	if(loggedInUser !== 'undefined'){
+	// 		console.log('not undefined')
+	// 		// const foundUser = JSON.parse(loggedInUser)
+	// 		// setUser(foundUser)
+	// 	}
+	},[user])
 	
 	const clearUser = () => {
 		
@@ -63,7 +84,7 @@ const App = () => {
 						/>
 					<Route 
 						path='/user'
-						element={<User msgAlert={msgAlert} user={user} />}
+						element={<User msgAlert={msgAlert} user={user} setUser={setUser} />}
 						/>
 					<Route
 						path="/sign-up"
@@ -74,7 +95,7 @@ const App = () => {
 					<Route
 						path="/sign-in"
 						element={
-							<SignIn msgAlert={msgAlert} setUser={setUser} />
+							<SignIn msgAlert={msgAlert} setUser={setUser} user={user}/>
 						}
 					/>
 					<Route
