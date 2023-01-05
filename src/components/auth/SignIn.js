@@ -29,7 +29,7 @@ const SignIn = (props) => {
 	const onSignIn = (event) => {
 		event.preventDefault()
 		console.log("the props", props)
-		const { msgAlert, setUser } = props
+		const { msgAlert, setUser, user } = props
 
 		const credentials = { email, password }
 
@@ -52,6 +52,7 @@ const SignIn = (props) => {
 					variant: "danger",
 				})
 			})
+			
 	}
 
 	return (

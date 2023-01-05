@@ -23,11 +23,18 @@ const User = (props) => {
 			</Link>
 		</>
 	} else {
-        buttons = <Link to="/sign-out">
+        buttons = 
+        <>
+        
+        <Link to="/sign-out">
         <Button size="huge" className="usr-btn">
             Sign Out
         </Button>
     </Link>
+    <Link to='/my-posts'>
+    <Button size='huge' className="usr-btn"></Button></Link>
+        </>
+    
     }
 
 	return (

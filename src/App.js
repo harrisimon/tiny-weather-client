@@ -14,6 +14,7 @@ import SignIn from "./components/auth/SignIn"
 import SignOut from "./components/auth/SignOut"
 import ChangePassword from "./components/auth/ChangePassword"
 import User from "./components/auth/User"
+import UserPosts from "./components/UserPosts"
 import "semantic-ui-css/semantic.min.css"
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
 	}
 	window.addEventListener('resize', appHeight)
 	appHeight()
+	
 	
 	const clearUser = () => {
 		
@@ -55,6 +57,10 @@ const App = () => {
 						path="/"
 						element={<Home msgAlert={msgAlert} user={user} />}
 					/>
+					<Route
+						path='/my-posts'
+						element={<UserPosts msgAlert={msgAlert} user={user} />}
+						/>
 					<Route 
 						path='/user'
 						element={<User msgAlert={msgAlert} user={user} />}

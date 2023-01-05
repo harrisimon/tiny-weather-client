@@ -32,3 +32,13 @@ export const submitPost = (user, id, data) => {
 		},
 	})
 }
+
+export const getMyPosts = (user) => {
+	return axios({
+		method: 'GET',
+		url: apiUrl + "/my-posts",
+		headers: {
+			Authorization: `Token token=${user.token}`
+		}
+	})
+}

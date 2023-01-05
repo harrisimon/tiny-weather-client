@@ -31,7 +31,7 @@ const Latest = (props) => {
 	let addPost
 
 	const loadInfo = (res) => {
-		console.log("load info res reviews", res.data.weather[0].reviews)
+		// console.log("load info res reviews", res.data.weather[0].reviews)
 		setWeather(res.data.weather[0])
 		setPostList(res.data.weather[0].reviews.slice(0).reverse())
 	}
@@ -54,7 +54,7 @@ const Latest = (props) => {
 		submitPost(user, weather._id, post)
 			.then(setPostOpen(false))
 			.then(setRefresh(true))
-			.then("refresh submit", refresh)
+			.then("refresh submit", console.log(refresh))
 			.catch((error) => {
 				msgAlert({
 					heading: "Failure",
