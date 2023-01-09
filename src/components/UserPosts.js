@@ -56,7 +56,7 @@ const UserPosts = (props) => {
 				</Card.Content>
 				<Card.Content>{post.reviews.review}</Card.Content>
 				<Card.Content>{((post.temperature)*(9 / 5) + 32)+'° F'}</Card.Content>
-				<Card.Content><Button circular color="red" onClick={()=>removePost(index)}>X</Button></Card.Content>
+				<Card.Content><Button circular color="red" onClick={()=>removePost(index)}>Delete</Button></Card.Content>
 			</Card>
 		))
 		
