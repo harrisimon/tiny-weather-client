@@ -11,8 +11,8 @@ const UserPosts = (props) => {
 	let posts
 
 	const removePost = (index) => {
-		// console.log( userPosts[index])
-		deletePost(user, userPosts[index]._id, userPosts[index].reviews._id)
+		// console.log( userPosts[index],"index", index)
+		deletePost(user, userPosts[userPosts.length - index - 1]._id, userPosts[userPosts.length -index- 1].reviews._id)
 		.then(()=> {
 			msgAlert({
 				heading: 'Post deleted!',
@@ -44,7 +44,7 @@ const UserPosts = (props) => {
 	
 
 	if (userPosts !== null) {
-		posts = userPosts.reverse().map((post, index) => (
+		posts = userPosts.slice(0).reverse().map((post, index) => (
 			
 			<Card key={index}>
 				<Card.Content>
@@ -59,6 +59,7 @@ const UserPosts = (props) => {
 				<Card.Content><Button circular color="red" onClick={()=>removePost(index)}>X</Button></Card.Content>
 			</Card>
 		))
+		
 	} else {
 		posts = <h1>loading...</h1>
 	}
