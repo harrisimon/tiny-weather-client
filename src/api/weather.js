@@ -42,3 +42,13 @@ export const getMyPosts = (user) => {
 		}
 	})
 }
+
+export const deletePost = (user, weather, review) => {
+	return axios({
+		method: 'DELETE',
+		url: apiUrl + `/review/${weather}/${review}`,
+		headers: {
+			Authorization: `Token token=${user.token}`
+		}
+	})
+}

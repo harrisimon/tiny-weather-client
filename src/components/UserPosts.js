@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from "react"
-import { getMyPosts } from "../api/weather"
+import { getMyPosts, deletePost } from "../api/weather"
 import { useNavigate } from "react-router-dom"
-import { Card, Container } from "semantic-ui-react"
+import { Button, Card, Container } from "semantic-ui-react"
 import UserBar from "./shared/UserBar"
 
 const UserPosts = (props) => {
-	const { user } = props
+	const { user, msgAlert } = props
 	const [userPosts, setPosts] = useState(null)
 	const navigate = useNavigate()
 	let posts
+
+	const removePost = (index) => {
+		// console.log( userPosts[index])
+		deletePost(user, userPosts[index]._id, userPosts[index].reviews._id)
+		.then(()=> {
+			msgAlert({
+				heading: 'Post deleted!',
+				message: 'Removed!',
+				variant: 'success'
+			})
+		})
+		.then(() => getMyPosts(user).then((res) => {
+				
+			setPosts(res.data.reviews)
+		}))
+		.catch(() => {
+
+		})
+	}
+	// console.log(userPosts._id)
 
 	useEffect(() => {
 		if (user === null) {
@@ -24,7 +44,7 @@ const UserPosts = (props) => {
 	
 
 	if (userPosts !== null) {
-		posts = userPosts.slice(0).reverse().map((post, index) => (
+		posts = userPosts.reverse().map((post, index) => (
 			
 			<Card key={index}>
 				<Card.Content>
@@ -36,6 +56,7 @@ const UserPosts = (props) => {
 				</Card.Content>
 				<Card.Content>{post.reviews.review}</Card.Content>
 				<Card.Content>{((post.temperature)*(9 / 5) + 32)+'° F'}</Card.Content>
+				<Card.Content><Button circular color="red" onClick={()=>removePost(index)}>X</Button></Card.Content>
 			</Card>
 		))
 	} else {

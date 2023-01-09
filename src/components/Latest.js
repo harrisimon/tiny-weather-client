@@ -54,7 +54,7 @@ const Latest = (props) => {
 		submitPost(user, weather._id, post)
 			.then(setPostOpen(false))
 			.then(setRefresh(true))
-			.then("refresh submit", console.log(refresh))
+			// .then("refresh submit", console.log(refresh))
 			.catch((error) => {
 				msgAlert({
 					heading: "Failure",
