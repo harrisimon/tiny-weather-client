@@ -4,9 +4,12 @@ import { Button, Container, Grid, Modal, Card, Form } from "semantic-ui-react"
 import TextareaCounter from "react-textarea-counter"
 import { submitPost } from "../api/weather"
 import CardStack from "./CardStack"
+import { useNavigate } from "react-router-dom"
 
 const Latest = (props) => {
-	const { user, msgAlert } = props
+	
+	const { user, msgAlert, triggerRefresh } = props
+	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
 	const [weather, setWeather] = useState(null)
@@ -30,13 +33,15 @@ const Latest = (props) => {
 
 	useEffect(() => {
 		getLatestWeather()
-			.then((res) => {
-				// console.log("res", res.data.weather[0])
-				loadInfo(res)
-
-				// console.log("posts", postList)
-			})
-			// .then(setRefresh(false))
+		.then((res) => {
+			// console.log("res", res.data.weather[0])
+			loadInfo(res)
+			
+			// console.log("posts", postList)
+		})
+		
+		// .then(setRefresh(false))
+		
 		// console.log("refresh useeffect", refresh)
 	}, [refresh])
 
@@ -48,6 +53,8 @@ const Latest = (props) => {
 			.then(setPostOpen(false))
 
 			// .then("refresh submit", console.log(refresh))
+			.then(()=>navigate(0))
+			// .then(()=>triggerRefresh())
 			.catch((error) => {
 				msgAlert({
 					heading: "Failure",
