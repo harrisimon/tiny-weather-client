@@ -21,38 +21,35 @@ import "semantic-ui-css/semantic.min.css"
 const App = () => {
 	const [user, setUser] = useState(null)
 	const [msgAlerts, setMsgAlerts] = useState([])
-	
 
 	// console.log('user in app', user)
 	// console.log("local", JSON.parse(localStorage.getItem('user')))
 
 	const appHeight = () => {
 		const doc = document.documentElement
-		doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+		doc.style.setProperty("--app-height", `${window.innerHeight}px`)
 	}
-	window.addEventListener('resize', appHeight)
+	window.addEventListener("resize", appHeight)
 	appHeight()
-	
-	useEffect(()=> {
-		if(user !== null){
+
+	useEffect(() => {
+		if (user !== null) {
 			// console.log("found user", user)
-			localStorage.setItem('user',JSON.stringify(user))
-		} 
-		else {
+			localStorage.setItem("user", JSON.stringify(user))
+		} else {
 			// console.log(typeof localStorage.getItem('user'))
-			setUser(JSON.parse(localStorage.getItem('user')))
+			setUser(JSON.parse(localStorage.getItem("user")))
 		}
-	// 	const loggedInUser = localStorage.getItem('user')
-	// 	console.log("logged in user", loggedInUser)
-	// 	if(loggedInUser !== 'undefined'){
-	// 		console.log('not undefined')
-	// 		// const foundUser = JSON.parse(loggedInUser)
-	// 		// setUser(foundUser)
-	// 	}
-	},[user])
-	
+		// 	const loggedInUser = localStorage.getItem('user')
+		// 	console.log("logged in user", loggedInUser)
+		// 	if(loggedInUser !== 'undefined'){
+		// 		console.log('not undefined')
+		// 		// const foundUser = JSON.parse(loggedInUser)
+		// 		// setUser(foundUser)
+		// 	}
+	}, [user])
+
 	const clearUser = () => {
-		
 		setUser(null)
 	}
 
@@ -80,23 +77,19 @@ const App = () => {
 						element={<Home msgAlert={msgAlert} user={user} />}
 					/>
 					<Route
-						path='/my-posts'
+						path="/my-posts"
 						element={<UserPosts msgAlert={msgAlert} user={user} />}
-						/>
-						{msgAlerts.map((msgAlert) => (
-							<AutoDismissAlert
-								key={msgAlert.id}
-								heading={msgAlert.heading}
-								variant={msgAlert.variant}
-								message={msgAlert.message}
-								id={msgAlert.id}
-								deleteAlert={deleteAlert}
+					/>
+					<Route
+						path="/user"
+						element={
+							<User
+								msgAlert={msgAlert}
+								user={user}
+								setUser={setUser}
 							/>
-						))}
-					<Route 
-						path='/user'
-						element={<User msgAlert={msgAlert} user={user} setUser={setUser} />}
-						/>
+						}
+					/>
 					<Route
 						path="/sign-up"
 						element={
@@ -106,7 +99,11 @@ const App = () => {
 					<Route
 						path="/sign-in"
 						element={
-							<SignIn msgAlert={msgAlert} setUser={setUser} user={user}/>
+							<SignIn
+								msgAlert={msgAlert}
+								setUser={setUser}
+								user={user}
+							/>
 						}
 					/>
 					<Route
@@ -117,7 +114,7 @@ const App = () => {
 									msgAlert={msgAlert}
 									clearUser={clearUser}
 									user={user}
-									/>
+								/>
 							</RequireAuth>
 						}
 					/>
@@ -132,14 +129,24 @@ const App = () => {
 							</RequireAuth>
 						}
 					/>
+					{msgAlerts.map((msgAlert) => (
+						<AutoDismissAlert
+							key={msgAlert.id}
+							heading={msgAlert.heading}
+							variant={msgAlert.variant}
+							message={msgAlert.message}
+							id={msgAlert.id}
+							deleteAlert={deleteAlert}
+						/>
+					))}
 				</Routes>
 				<Helmet>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="%PUBLIC_URL%/tinyweather-icon-touch.png"
-        />
-      </Helmet>
+					<link
+						rel="apple-touch-icon"
+						sizes="180x180"
+						href="%PUBLIC_URL%/tinyweather-icon-touch.png"
+					/>
+				</Helmet>
 			</Fragment>
 		</Segment>
 	)
