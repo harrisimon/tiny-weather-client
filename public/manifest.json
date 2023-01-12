@@ -8,8 +8,8 @@
       "type": "image/x-icon"
     },
     {
-      "src": "tinyweather-icon-touch.png",
-      "type": "image/png",
+      "src": "favicon.ico",
+      "type": "image/x-icon",
       "sizes": "192x192"
     },
     {
@@ -21,5 +21,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#000000"
 }
