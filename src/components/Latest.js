@@ -14,7 +14,7 @@ const Latest = (props) => {
 	const [open, setOpen] = useState(false)
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
-	const [refresh, setRefresh] = useState(false)
+	const [refresh, setRefresh] = useState(0)
 
 	let temp
 	let pressure
@@ -36,7 +36,7 @@ const Latest = (props) => {
 
 				// console.log("posts", postList)
 			})
-			.then(setRefresh(false))
+			// .then(setRefresh(false))
 		// console.log("refresh useeffect", refresh)
 	}, [refresh])
 
@@ -54,7 +54,7 @@ const Latest = (props) => {
 					message: "Create Post Failure" + error,
 				})
 			})
-		setRefresh(true)
+		setRefresh(old => old + 1)
 	}
 
 	const handleChange = (e) => {
