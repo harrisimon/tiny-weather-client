@@ -129,24 +129,24 @@ const App = () => {
 							</RequireAuth>
 						}
 					/>
-					{msgAlerts.map((msgAlert) => (
-						<AutoDismissAlert
-							key={msgAlert.id}
-							heading={msgAlert.heading}
-							variant={msgAlert.variant}
-							message={msgAlert.message}
-							id={msgAlert.id}
-							deleteAlert={deleteAlert}
-						/>
-					))}
 				</Routes>
 				<Helmet>
 					<link
 						rel="apple-touch-icon"
 						sizes="180x180"
 						href="%PUBLIC_URL%/tinyweather-icon-touch.png"
-					/>
+						/>
 				</Helmet>
+						{msgAlerts.map((msgAlert) => (
+							<AutoDismissAlert
+								key={msgAlert.id}
+								heading={msgAlert.heading}
+								variant={msgAlert.variant}
+								message={msgAlert.message}
+								id={msgAlert.id}
+								deleteAlert={deleteAlert}
+							/>
+						))}
 			</Fragment>
 		</Segment>
 	)
