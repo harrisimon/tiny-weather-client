@@ -15,6 +15,7 @@ import SignOut from "./components/auth/SignOut"
 import ChangePassword from "./components/auth/ChangePassword"
 import User from "./components/auth/User"
 import UserPosts from "./components/UserPosts"
+import { Helmet } from "react-helmet"
 import "semantic-ui-css/semantic.min.css"
 
 const App = () => {
@@ -82,6 +83,16 @@ const App = () => {
 						path='/my-posts'
 						element={<UserPosts msgAlert={msgAlert} user={user} />}
 						/>
+						{msgAlerts.map((msgAlert) => (
+							<AutoDismissAlert
+								key={msgAlert.id}
+								heading={msgAlert.heading}
+								variant={msgAlert.variant}
+								message={msgAlert.message}
+								id={msgAlert.id}
+								deleteAlert={deleteAlert}
+							/>
+						))}
 					<Route 
 						path='/user'
 						element={<User msgAlert={msgAlert} user={user} setUser={setUser} />}
@@ -106,7 +117,7 @@ const App = () => {
 									msgAlert={msgAlert}
 									clearUser={clearUser}
 									user={user}
-								/>
+									/>
 							</RequireAuth>
 						}
 					/>
@@ -122,16 +133,13 @@ const App = () => {
 						}
 					/>
 				</Routes>
-				{msgAlerts.map((msgAlert) => (
-					<AutoDismissAlert
-						key={msgAlert.id}
-						heading={msgAlert.heading}
-						variant={msgAlert.variant}
-						message={msgAlert.message}
-						id={msgAlert.id}
-						deleteAlert={deleteAlert}
-					/>
-				))}
+				<Helmet>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="%PUBLIC_URL%/tinyweather-icon-touch.png"
+        />
+      </Helmet>
 			</Fragment>
 		</Segment>
 	)

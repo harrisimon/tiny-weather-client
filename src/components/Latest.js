@@ -11,9 +11,11 @@ import {
 } from "semantic-ui-react"
 import TextareaCounter from "react-textarea-counter"
 import { submitPost } from "../api/weather"
+import { Navigate, useNavigate } from "react-router-dom"
 
 const Latest = (props) => {
 	const { user, msgAlert } = props
+	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
 	const [weather, setWeather] = useState(null)
@@ -54,6 +56,7 @@ const Latest = (props) => {
 		submitPost(user, weather._id, post)
 			.then(setPostOpen(false))
 			.then(setRefresh(true))
+			.then(navigate(0))
 			// .then("refresh submit", console.log(refresh))
 			.catch((error) => {
 				msgAlert({
