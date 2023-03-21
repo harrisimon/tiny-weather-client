@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 
 const Latest = (props) => {
 	
-	const { user, msgAlert, triggerRefresh } = props
+	const { user, msgAlert } = props
 	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
