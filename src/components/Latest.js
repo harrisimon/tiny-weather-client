@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react"
 import { getLatestWeather } from "../api/weather"
-import { Button, Container, Grid, Modal, Card, Form } from "semantic-ui-react"
-import TextareaCounter from "react-textarea-counter"
+import { Button, Container, Grid, Modal, Card, Form, TextArea } from "semantic-ui-react"
+
 import { submitPost } from "../api/weather"
 import CardStack from "./CardStack"
 import { useNavigate } from "react-router-dom"
 
 const Latest = (props) => {
 	
-	const { user, msgAlert } = props
+	const { user, msgAlert, weather, postList } = props
 	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
-	const [weather, setWeather] = useState(null)
-	const [postList, setPostList] = useState(null)
+	
+	// const [postList, setPostList] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
@@ -25,25 +25,25 @@ const Latest = (props) => {
 	let posttime
 	let addPost
 
-	const loadInfo = (res) => {
-		// console.log("load info res reviews", res.data.weather[0].reviews)
-		setWeather(res.data.weather[0])
-		setPostList(res.data.weather[0].reviews.slice(0).reverse())
-	}
+	// const loadInfo = (res) => {
+	// 	// console.log("load info res reviews", res.data.weather[0].reviews)
+	// 	// setWeather(res.data.weather[0])
+	// 	setPostList(res.data.weather[0].reviews.slice(0).reverse())
+	// }
 
-	useEffect(() => {
-		getLatestWeather()
-		.then((res) => {
-			// console.log("res", res.data.weather[0])
-			loadInfo(res)
+	// useEffect(() => {
+	// 	getLatestWeather()
+	// 	.then((res) => {
+	// 		// console.log("res", res.data.weather[0])
+	// 		loadInfo(res)
 			
-			// console.log("posts", postList)
-		})
+	// 		// console.log("posts", postList)
+	// 	})
 		
-		// .then(setRefresh(false))
+	// 	// .then(setRefresh(false))
 		
-		// console.log("refresh useeffect", refresh)
-	}, [refresh])
+	// 	// console.log("refresh useeffect", refresh)
+	// }, [refresh])
 
 	const submit = (e) => {
 		e.preventDefault()
@@ -89,10 +89,10 @@ const Latest = (props) => {
 					<Modal.Header>Add a Post</Modal.Header>
 					<Modal.Content>
 						<Form onSubmit={submit}>
-							<TextareaCounter
+							<TextArea
 								name="review"
 								onChange={handleChange}
-								countLimit={140}
+								
 								placeholder="A poem just came to mind..."
 							/>
 							<Modal.Actions>
