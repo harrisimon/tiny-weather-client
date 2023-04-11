@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react"
-import { getLatestWeather } from "../api/weather"
+import React, { useState } from "react"
 import { Button, Container, Grid, Modal, Card, Form, TextArea } from "semantic-ui-react"
 
 import { submitPost } from "../api/weather"
@@ -12,8 +11,6 @@ const Latest = (props) => {
 	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
-	
-	// const [postList, setPostList] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [openPost, setPostOpen] = useState(false)
 	const [post, setPost] = useState(null)
@@ -25,25 +22,6 @@ const Latest = (props) => {
 	let posttime
 	let addPost
 
-	// const loadInfo = (res) => {
-	// 	// console.log("load info res reviews", res.data.weather[0].reviews)
-	// 	// setWeather(res.data.weather[0])
-	// 	setPostList(res.data.weather[0].reviews.slice(0).reverse())
-	// }
-
-	// useEffect(() => {
-	// 	getLatestWeather()
-	// 	.then((res) => {
-	// 		// console.log("res", res.data.weather[0])
-	// 		loadInfo(res)
-			
-	// 		// console.log("posts", postList)
-	// 	})
-		
-	// 	// .then(setRefresh(false))
-		
-	// 	// console.log("refresh useeffect", refresh)
-	// }, [refresh])
 
 	const submit = (e) => {
 		e.preventDefault()
@@ -92,7 +70,7 @@ const Latest = (props) => {
 							<TextArea
 								name="review"
 								onChange={handleChange}
-								
+								className='review-box'
 								placeholder="A poem just came to mind..."
 							/>
 							<Modal.Actions>
