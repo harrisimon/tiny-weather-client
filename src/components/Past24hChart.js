@@ -8,11 +8,11 @@ export default function Past24HoursChart() {
 
 	useEffect(() => {
 		get24HourHistory()
-			.then(res => {
+			.then((res) => {
 				console.log("Chart data response:", res.data) // Debug log
-				setData(res.data.weather || res.data.data || res.data) // Handle different response structures
+				setData(res.data.weather) // We know the structure is { weather: [...] }
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error("Failed to load 24h history", err)
 				setData([]) // fallback to empty array on error
 			})
@@ -23,25 +23,24 @@ export default function Past24HoursChart() {
 	if (data.length === 0) return <p>No data available</p>
 
 	const chartData = {
-		labels: data.map(entry =>
+		labels: data.map((entry) =>
 			new Date(entry.createdAt).toLocaleTimeString([], {
 				hour: "2-digit",
-				minute: "2-digit"
+				minute: "2-digit",
 			})
 		),
 		datasets: [
 			{
 				label: "Temperature (°F)",
-				data: data.map(entry => {
-					// Convert to Fahrenheit if needed, or use temperature directly
-					const temp = entry.temperature || entry.temp
-					return temp ? Math.round(temp * (9 / 5) + 32) : null
+				data: data.map((entry) => {
+					// Convert Celsius to Fahrenheit
+					return Math.round(entry.temperature * (9 / 5) + 32)
 				}),
 				borderWidth: 2,
 				tension: 0.2,
-				pointRadius: 0
-			}
-		]
+				pointRadius: 0,
+			},
+		],
 	}
 
 	return (
