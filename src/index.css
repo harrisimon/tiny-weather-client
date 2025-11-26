@@ -175,20 +175,7 @@ p {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-.chart-container {
-	width: 100%;
-	display: flex;
-	justify-content: center;  /* horizontal center */
-  }
-  
-  .chart-inner {
-	width: 100%;
-	max-width: 600px;
-  }
-  
-  .chart-title {
-	text-align: center;
-  }
+
   .ui.primary.button {
 	font-family: "Unbounded", cursive;
 }
@@ -203,4 +190,32 @@ p {
 	margin-bottom: 3rem;   /* space below, adjust if you like */
 
 	font-family: "Unbounded", cursive;
+}
+.chart-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding: 0 1rem; /* Add some padding on mobile */
+}
+
+.chart-inner {
+	width: 100%;
+	max-width: 600px;
+	overflow-x: auto; /* Allow horizontal scroll on mobile if needed */
+}
+
+.chart-title {
+	text-align: center;
+	font-size: 1.5rem; /* Make title smaller on mobile */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+	.chart-inner {
+		max-width: 100%;
+	}
+	
+	.chart-title {
+		font-size: 1.2rem;
+	}
 }

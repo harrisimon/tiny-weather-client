@@ -43,11 +43,41 @@ export default function Past24HoursChart() {
 		],
 	}
 
+	const chartOptions = {
+		responsive: true,
+		maintainAspectRatio: true,
+		aspectRatio: 2,
+		plugins: {
+			legend: {
+				display: true,
+				position: 'top',
+			},
+		},
+		scales: {
+			x: {
+				ticks: {
+					maxRotation: 45,
+					minRotation: 45,
+					font: {
+						size: 10
+					}
+				}
+			},
+			y: {
+				ticks: {
+					font: {
+						size: 10
+					}
+				}
+			}
+		}
+	}
+
 	return (
 		<div className="chart-container">
 			<div className="chart-inner">
 				<h2 className="chart-title">Past 24 Hours Temperature</h2>
-				<Line data={chartData} />
+				<Line data={chartData} options={chartOptions} />
 			</div>
 		</div>
 	)
