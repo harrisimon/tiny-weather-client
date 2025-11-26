@@ -1,13 +1,21 @@
 import React, { useState } from "react"
-import { Button, Container, Grid, Modal, Card, Form, TextArea } from "semantic-ui-react"
+import {
+	Button,
+	Container,
+	Grid,
+	Modal,
+	Card,
+	Form,
+	TextArea,
+} from "semantic-ui-react"
 
 import { submitPost } from "../api/weather"
 import CardStack from "./CardStack"
 import { useNavigate } from "react-router-dom"
+import Past24HoursChart from "./Past24hChart"
 
 const Latest = (props) => {
-	
-	const { user, msgAlert, weather, postList } = props
+	const { user, msgAlert, weather, postList, showChart, toggleChart } = props
 	const navigate = useNavigate()
 
 	const [tempMeasure, changeTempMeasure] = useState(true)
@@ -22,7 +30,6 @@ const Latest = (props) => {
 	let posttime
 	let addPost
 
-
 	const submit = (e) => {
 		e.preventDefault()
 
@@ -31,7 +38,7 @@ const Latest = (props) => {
 			.then(setPostOpen(false))
 
 			// .then("refresh submit", console.log(refresh))
-			.then(()=>navigate(0))
+			.then(() => navigate(0))
 			// .then(()=>triggerRefresh())
 			.catch((error) => {
 				msgAlert({
@@ -39,7 +46,7 @@ const Latest = (props) => {
 					message: "Create Post Failure" + error,
 				})
 			})
-		setRefresh(old => old + 1)
+		setRefresh((old) => old + 1)
 	}
 
 	const handleChange = (e) => {
@@ -70,7 +77,7 @@ const Latest = (props) => {
 							<TextArea
 								name="review"
 								onChange={handleChange}
-								className='review-box'
+								className="review-box"
 								placeholder="A poem just came to mind..."
 							/>
 							<Modal.Actions>
@@ -102,7 +109,7 @@ const Latest = (props) => {
 		// add in loading wheel
 	}
 	return (
-		<Container>
+		<Container style={{ paddingBottom: showChart ? "120px" : "0" }}>
 			<Grid>
 				<Grid.Row>
 					<Grid.Column width={16}>
@@ -139,6 +146,22 @@ const Latest = (props) => {
 					</div>
 				</Card.Group>
 			</div>
+
+			{/* NEW: chart toggle button + chart, BEFORE the .buttons div */}
+			<Button
+				primary
+				className="font"
+				onClick={toggleChart}
+				style={{ marginTop: "1rem", marginBottom: "1rem" }}
+			>
+				{showChart ? "Hide Past 24 Hours" : "Show Past 24 Hours"}
+			</Button>
+
+			{showChart && (
+				<div style={{ marginBottom: "120px" }}>
+					<Past24HoursChart />
+				</div>
+			)}
 
 			<div className="buttons">
 				{addPost}

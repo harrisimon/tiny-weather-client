@@ -175,3 +175,32 @@ p {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+.chart-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;  /* horizontal center */
+  }
+  
+  .chart-inner {
+	width: 100%;
+	max-width: 600px;
+  }
+  
+  .chart-title {
+	text-align: center;
+  }
+  .ui.primary.button {
+	font-family: "Unbounded", cursive;
+}
+.buttons {
+	/* was: position: absolute; left: 0; right: 0; bottom: 3rem; */
+	position: static;
+	left: auto;
+	right: auto;
+	bottom: auto;
+
+	margin-top: 2rem;      /* space above the buttons */
+	margin-bottom: 3rem;   /* space below, adjust if you like */
+
+	font-family: "Unbounded", cursive;
+}

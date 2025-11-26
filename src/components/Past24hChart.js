@@ -1,0 +1,46 @@
+import React, { useEffect, useState } from "react"
+import { Line } from "react-chartjs-2"
+import "chart.js/auto"
+
+export default function Past24HoursChart() {
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    fetch("/api/history/24h")
+      .then(res => res.json())
+      .then(json => setData(json.weather))
+      .catch(err => {
+        console.error("Failed to load 24h history", err)
+        setData([]) // fallback to empty array on error
+      })
+  }, [])
+
+  if (!data) return <p>Loading...</p>
+
+  const chartData = {
+    labels: data.map(entry =>
+      new Date(entry.createdAt).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
+    ),
+    datasets: [
+      {
+        label: "Temperature (°F)",
+        data: data.map(entry => entry.temp),
+        borderWidth: 2,
+        tension: 0.2,
+        pointRadius: 0
+      }
+    ]
+  }
+
+  return (
+    <div className="chart-container">
+      <div className="chart-inner">
+        <h2 className="chart-title">Past 24 Hours Temperature</h2>
+        <Line data={chartData} />
+      </div>
+    </div>
+  )
+}

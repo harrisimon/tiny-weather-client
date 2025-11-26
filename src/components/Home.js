@@ -4,12 +4,14 @@ import PullToRefresh from "react-simple-pull-to-refresh"
 import { getLatestWeather } from "../api/weather"
 import Latest from "./Latest"
 import UserBar from "./shared/UserBar"
+import Past24HoursChart from "./Past24hChart"
 
 const Home = (props) => {
 	const { msgAlert, user } = props
 	const [refresh, setRefresh] = useState(false)
 	const [weather, setWeather] = useState(null)
 	const [postList, setPostList] = useState(null)
+	const [showChart, setShowChart] = useState(false)
 
 	const loadInfo = (res) => {
 		// console.log("load info res reviews", res.data.weather[0].reviews)
@@ -17,7 +19,6 @@ const Home = (props) => {
 		setPostList(res.data.weather[0].reviews.slice(0).reverse())
 	}
 	useEffect(() => {
-	
 		getLatestWeather().then((res) => {
 			console.log("res", res.data.weather[0])
 			loadInfo(res)
@@ -41,6 +42,8 @@ const Home = (props) => {
 					triggerRefresh={() => setRefresh((prev) => !prev)}
 					weather={weather}
 					postList={postList}
+					showChart={showChart}
+					toggleChart={() => setShowChart((prev) => !prev)}
 				/>
 			</Container>
 		</PullToRefresh>
