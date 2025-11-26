@@ -114,15 +114,26 @@ p {
 	bottom: 0;
 	right: 0;
 	font-family: "Unbounded", cursive;
-	background-color: rgb(51, 51, 51); /* Match your app background */
+	background-color: rgb(51, 51, 51);
 	padding: 1rem;
-	z-index: 1000; /* Ensure buttons stay on top */
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Optional: shadow for separation */
+	z-index: 1000;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* Ensure buttons are visible and properly sized */
+.buttons .ui.button {
+	width: 100%;
+	margin: 0 !important;
 }
 
 /* Add padding to container to prevent content from being hidden behind fixed buttons */
 nav.ui.container {
-	padding-bottom: 120px; /* Adjust based on button height */
+	padding-bottom: 200px; /* Increase padding to account for all buttons */
 }
 
 .ui.card > .content > .header:not(.ui),
@@ -221,7 +232,7 @@ nav.ui.container {
 	}
 	
 	nav.ui.container {
-		padding-bottom: 140px; /* More padding on mobile for taller buttons */
+		padding-bottom: 220px; /* More padding on mobile for all three buttons */
 	}
 
 	.chart-inner {
