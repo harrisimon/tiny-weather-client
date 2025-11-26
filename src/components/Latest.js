@@ -161,7 +161,7 @@ const Latest = (props) => {
 
 			{showChart && (
 				<div style={{ marginBottom: "120px" }}>
-					<Past24HoursChart />
+					<Past24HoursChart tempMeasure={tempMeasure} />
 				</div>
 			)}
 
