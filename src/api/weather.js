@@ -22,6 +22,13 @@ export const getLatestWeather = (user) => {
 	})
 }
 
+export const get24HourHistory = () => {
+	return axios({
+		method: "GET",
+		url: apiUrl + "/history/24h",
+	})
+}
+
 export const submitPost = (user, id, data) => {
 	return axios({
 		method: "POST",
@@ -35,20 +42,20 @@ export const submitPost = (user, id, data) => {
 
 export const getMyPosts = (user) => {
 	return axios({
-		method: 'GET',
+		method: "GET",
 		url: apiUrl + "/my-posts",
 		headers: {
-			Authorization: `Token token=${user.token}`
-		}
+			Authorization: `Token token=${user.token}`,
+		},
 	})
 }
 
 export const deletePost = (user, weather, review) => {
 	return axios({
-		method: 'DELETE',
+		method: "DELETE",
 		url: apiUrl + `/review/${weather}/${review}`,
 		headers: {
-			Authorization: `Token token=${user.token}`
-		}
+			Authorization: `Token token=${user.token}`,
+		},
 	})
 }

@@ -1,46 +1,55 @@
 import React, { useEffect, useState } from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
+import { get24HourHistory } from "../api/weather"
 
 export default function Past24HoursChart() {
-  const [data, setData] = useState(null)
+	const [data, setData] = useState(null)
 
-  useEffect(() => {
-    fetch("/api/history/24h")
-      .then(res => res.json())
-      .then(json => setData(json.weather))
-      .catch(err => {
-        console.error("Failed to load 24h history", err)
-        setData([]) // fallback to empty array on error
-      })
-  }, [])
+	useEffect(() => {
+		get24HourHistory()
+			.then(res => {
+				console.log("Chart data response:", res.data) // Debug log
+				setData(res.data.weather || res.data.data || res.data) // Handle different response structures
+			})
+			.catch(err => {
+				console.error("Failed to load 24h history", err)
+				setData([]) // fallback to empty array on error
+			})
+	}, [])
 
-  if (!data) return <p>Loading...</p>
+	if (!data) return <p>Loading...</p>
 
-  const chartData = {
-    labels: data.map(entry =>
-      new Date(entry.createdAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      })
-    ),
-    datasets: [
-      {
-        label: "Temperature (°F)",
-        data: data.map(entry => entry.temp),
-        borderWidth: 2,
-        tension: 0.2,
-        pointRadius: 0
-      }
-    ]
-  }
+	if (data.length === 0) return <p>No data available</p>
 
-  return (
-    <div className="chart-container">
-      <div className="chart-inner">
-        <h2 className="chart-title">Past 24 Hours Temperature</h2>
-        <Line data={chartData} />
-      </div>
-    </div>
-  )
+	const chartData = {
+		labels: data.map(entry =>
+			new Date(entry.createdAt).toLocaleTimeString([], {
+				hour: "2-digit",
+				minute: "2-digit"
+			})
+		),
+		datasets: [
+			{
+				label: "Temperature (°F)",
+				data: data.map(entry => {
+					// Convert to Fahrenheit if needed, or use temperature directly
+					const temp = entry.temperature || entry.temp
+					return temp ? Math.round(temp * (9 / 5) + 32) : null
+				}),
+				borderWidth: 2,
+				tension: 0.2,
+				pointRadius: 0
+			}
+		]
+	}
+
+	return (
+		<div className="chart-container">
+			<div className="chart-inner">
+				<h2 className="chart-title">Past 24 Hours Temperature</h2>
+				<Line data={chartData} />
+			</div>
+		</div>
+	)
 }
