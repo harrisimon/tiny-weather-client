@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2"
 import "chart.js/auto"
 import { get24HourHistory } from "../api/weather"
 
-export default function Past24HoursChart() {
+export default function Past24HoursChart({ tempMeasure = true }) {
 	const [data, setData] = useState(null)
 
 	useEffect(() => {
@@ -31,10 +31,12 @@ export default function Past24HoursChart() {
 		),
 		datasets: [
 			{
-				label: "Temperature (°F)",
+				label: tempMeasure ? "Temperature (°F)" : "Temperature (°C)",
 				data: data.map((entry) => {
-					// Convert Celsius to Fahrenheit
-					return Math.round(entry.temperature * (9 / 5) + 32)
+					// Convert to Fahrenheit if tempMeasure is true, otherwise use Celsius
+					return tempMeasure
+						? Math.round(entry.temperature * (9 / 5) + 32)
+						: Math.round(entry.temperature * 10) / 10 // Round to 1 decimal for Celsius
 				}),
 				borderWidth: 2,
 				tension: 0.2,

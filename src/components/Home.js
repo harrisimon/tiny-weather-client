@@ -11,7 +11,7 @@ const Home = (props) => {
 	const [refresh, setRefresh] = useState(false)
 	const [weather, setWeather] = useState(null)
 	const [postList, setPostList] = useState(null)
-	const [showChart, setShowChart] = useState(false)
+	const [showChart, setShowChart] = useState(true)
 
 	const loadInfo = (res) => {
 		// console.log("load info res reviews", res.data.weather[0].reviews)
