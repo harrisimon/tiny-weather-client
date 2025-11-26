@@ -135,17 +135,19 @@ const Latest = (props) => {
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
-			<h3>Posts</h3>
+			{postList && postList.length > 0 && <h3>Posts</h3>}
 
-			<div className="reviews">
-				<Card.Group centered>
-					<div className="reading">
-						{/* {reviews} */}
+			{postList && postList.length > 0 && (
+				<div className="reviews">
+					<Card.Group centered>
+						<div className="reading">
+							{/* {reviews} */}
 
-						<CardStack weather={weather} postList={postList} />
-					</div>
-				</Card.Group>
-			</div>
+							<CardStack weather={weather} postList={postList} />
+						</div>
+					</Card.Group>
+				</div>
+			)}
 
 			{/* NEW: chart toggle button + chart, BEFORE the .buttons div */}
 			<Button

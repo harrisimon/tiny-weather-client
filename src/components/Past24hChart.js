@@ -50,7 +50,7 @@ export default function Past24HoursChart() {
 		plugins: {
 			legend: {
 				display: true,
-				position: 'top',
+				position: "top",
 			},
 		},
 		scales: {
@@ -59,18 +59,18 @@ export default function Past24HoursChart() {
 					maxRotation: 45,
 					minRotation: 45,
 					font: {
-						size: 10
-					}
-				}
+						size: 10,
+					},
+				},
 			},
 			y: {
 				ticks: {
 					font: {
-						size: 10
-					}
-				}
-			}
-		}
+						size: 10,
+					},
+				},
+			},
+		},
 	}
 
 	return (
