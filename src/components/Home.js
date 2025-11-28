@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Container } from "semantic-ui-react"
-import PullToRefresh from "react-simple-pull-to-refresh"
 import { getLatestWeather } from "../api/weather"
 import Latest from "./Latest"
 import UserBar from "./shared/UserBar"
-import Past24HoursChart from "./Past24hChart"
 
 const Home = (props) => {
 	const { msgAlert, user } = props
@@ -31,22 +29,20 @@ const Home = (props) => {
 	}, [refresh])
 
 	return (
-		<PullToRefresh onRefresh={() => setRefresh((prev) => !prev)}>
-			<Container as="nav">
-				<UserBar />
+		<Container as="nav">
+			<UserBar />
 
-				<Latest
-					user={user}
-					msgAlert={msgAlert}
-					refresh={refresh}
-					triggerRefresh={() => setRefresh((prev) => !prev)}
-					weather={weather}
-					postList={postList}
-					showChart={showChart}
-					toggleChart={() => setShowChart((prev) => !prev)}
-				/>
-			</Container>
-		</PullToRefresh>
+			<Latest
+				user={user}
+				msgAlert={msgAlert}
+				refresh={refresh}
+				triggerRefresh={() => setRefresh((prev) => !prev)}
+				weather={weather}
+				postList={postList}
+				showChart={showChart}
+				toggleChart={() => setShowChart((prev) => !prev)}
+			/>
+		</Container>
 	)
 }
 
