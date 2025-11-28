@@ -1,94 +1,19 @@
 import React, { useState } from "react"
-import {
-	Button,
-	Container,
-	Grid,
-	Modal,
-	Card,
-	Form,
-	TextArea,
-} from "semantic-ui-react"
+import { Button, Container, Grid, Card } from "semantic-ui-react"
 
-import { submitPost } from "../api/weather"
 import CardStack from "./CardStack"
-import { useNavigate } from "react-router-dom"
 import Past24HoursChart from "./Past24hChart"
+import FloatingButtons from "./shared/FloatingButtons"
 
 const Latest = (props) => {
 	const { user, msgAlert, weather, postList, showChart, toggleChart } = props
-	const navigate = useNavigate()
 
-	const [tempMeasure, changeTempMeasure] = useState(true)
-	const [open, setOpen] = useState(false)
-	const [openPost, setPostOpen] = useState(false)
-	const [post, setPost] = useState(null)
-	const [refresh, setRefresh] = useState(0)
+	const [tempMeasure, setTempMeasure] = useState(true)
 
 	let temp
 	let pressure
 	let humidity
 	let posttime
-	let addPost
-
-	const submit = (e) => {
-		e.preventDefault()
-
-		submitPost(user, weather._id, post)
-			// .then(setRefresh(true))
-			.then(setPostOpen(false))
-
-			// .then("refresh submit", console.log(refresh))
-			.then(() => navigate(0))
-			// .then(()=>triggerRefresh())
-			.catch((error) => {
-				msgAlert({
-					heading: "Failure",
-					message: "Create Post Failure" + error,
-				})
-			})
-		setRefresh((old) => old + 1)
-	}
-
-	const handleChange = (e) => {
-		setPost((prevPost) => {
-			const updatedName = e.target.name
-			let updatedValue = e.target.value
-
-			const updatedPost = { [updatedName]: updatedValue }
-			return { ...prevPost, ...updatedPost }
-		})
-	}
-	if (user !== null) {
-		addPost = (
-			<>
-				<Modal
-					onClose={() => setPostOpen(false)}
-					onOpen={() => setPostOpen(true)}
-					open={openPost}
-					trigger={
-						<Button color="teal" className="font">
-							Add a Post
-						</Button>
-					}
-				>
-					<Modal.Header>Add a Post</Modal.Header>
-					<Modal.Content>
-						<Form onSubmit={submit}>
-							<TextArea
-								name="review"
-								onChange={handleChange}
-								className="review-box"
-								placeholder="A poem just came to mind..."
-							/>
-							<Modal.Actions>
-								<Button type="submit">Post</Button>
-							</Modal.Actions>
-						</Form>
-					</Modal.Content>
-				</Modal>
-			</>
-		)
-	}
 
 	if (weather !== null && postList !== null) {
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
@@ -149,7 +74,7 @@ const Latest = (props) => {
 				</div>
 			)}
 
-			{/* NEW: chart toggle button + chart, BEFORE the .buttons div */}
+			{/* NEW: chart toggle button + chart, BEFORE the floating buttons */}
 			<Button
 				primary
 				className="font"
@@ -165,51 +90,12 @@ const Latest = (props) => {
 				</div>
 			)}
 
-			<div className="buttons">
-				{addPost}
-
-				<Button
-					className="font"
-					color="grey"
-					onClick={() => changeTempMeasure(!tempMeasure)}
-				>
-					Change Temp Measure
-				</Button>
-				<Modal
-					onClose={() => setOpen(false)}
-					onOpen={() => setOpen(true)}
-					open={open}
-					trigger={
-						<Button color="black" className="font">
-							About this site
-						</Button>
-					}
-				>
-					<Modal.Header className="temp">
-						About Tiny Weather
-					</Modal.Header>
-					<Modal.Content>
-						Tiny Weather is a site created by
-						<a href="https://harrison-simon.netlify.app/">
-							{" "}
-							Harrison Simon
-						</a>
-						. The data presented on the site are gathered from a
-						Raspberry Pi with a weather sensor which takes a reading
-						every half hour.
-						<br />
-						<h3>About the readings</h3>
-						The readings are taken from a{" "}
-						<a href="https://www.adafruit.com/product/2652">
-							BME 280 sensor
-						</a>
-						. Currently the humity sensor seems to be taking
-						incorrect readings.
-						<br />
-						More features coming soon...
-					</Modal.Content>
-				</Modal>
-			</div>
+			<FloatingButtons
+				user={user}
+				msgAlert={msgAlert}
+				weather={weather}
+				onTempMeasureChange={setTempMeasure}
+			/>
 		</Container>
 	)
 }
