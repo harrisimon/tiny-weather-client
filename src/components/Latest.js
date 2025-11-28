@@ -84,11 +84,7 @@ const Latest = (props) => {
 				{showChart ? "Hide Past 24 Hours" : "Show Past 24 Hours"}
 			</Button>
 
-			{showChart && (
-				<div style={{ marginBottom: "120px" }}>
-					<Past24HoursChart tempMeasure={tempMeasure} />
-				</div>
-			)}
+			{showChart && <Past24HoursChart tempMeasure={tempMeasure} />}
 
 			<FloatingButtons
 				user={user}
