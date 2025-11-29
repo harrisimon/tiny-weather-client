@@ -4,6 +4,7 @@ import PullToRefresh from "react-simple-pull-to-refresh"
 import { getLatestWeather } from "../api/weather"
 import Latest from "./Latest"
 import UserBar from "./shared/UserBar"
+import FloatingButtons from "./shared/FloatingButtons"
 
 const Home = (props) => {
 	const { msgAlert, user } = props
@@ -11,6 +12,7 @@ const Home = (props) => {
 	const [weather, setWeather] = useState(null)
 	const [postList, setPostList] = useState(null)
 	const [showChart, setShowChart] = useState(true)
+	const [tempMeasure, setTempMeasure] = useState(true)
 
 	const loadInfo = (res) => {
 		// console.log("load info res reviews", res.data.weather[0].reviews)
@@ -62,17 +64,24 @@ const Home = (props) => {
 					</div>
 				}
 			>
-				<Latest
-					user={user}
-					msgAlert={msgAlert}
-					refresh={refresh}
-					triggerRefresh={() => setRefresh((prev) => !prev)}
-					weather={weather}
-					postList={postList}
-					showChart={showChart}
-					toggleChart={() => setShowChart((prev) => !prev)}
-				/>
+				<div style={{ paddingTop: "10px" }}>
+					<Latest
+						refresh={refresh}
+						triggerRefresh={() => setRefresh((prev) => !prev)}
+						weather={weather}
+						postList={postList}
+						showChart={showChart}
+						toggleChart={() => setShowChart((prev) => !prev)}
+						tempMeasure={tempMeasure}
+					/>
+				</div>
 			</PullToRefresh>
+			<FloatingButtons
+				user={user}
+				msgAlert={msgAlert}
+				weather={weather}
+				onTempMeasureChange={setTempMeasure}
+			/>
 		</Container>
 	)
 }

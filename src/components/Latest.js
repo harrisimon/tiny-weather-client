@@ -1,14 +1,11 @@
-import React, { useState } from "react"
+import React from "react"
 import { Button, Container, Grid, Card } from "semantic-ui-react"
 
 import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
-import FloatingButtons from "./shared/FloatingButtons"
 
 const Latest = (props) => {
-	const { user, msgAlert, weather, postList, showChart, toggleChart } = props
-
-	const [tempMeasure, setTempMeasure] = useState(true)
+	const { weather, postList, showChart, toggleChart, tempMeasure } = props
 
 	let temp
 	let pressure
@@ -85,13 +82,6 @@ const Latest = (props) => {
 			</Button>
 
 			{showChart && <Past24HoursChart tempMeasure={tempMeasure} />}
-
-			<FloatingButtons
-				user={user}
-				msgAlert={msgAlert}
-				weather={weather}
-				onTempMeasureChange={setTempMeasure}
-			/>
 		</Container>
 	)
 }
