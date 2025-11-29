@@ -12,7 +12,42 @@ const Home = (props) => {
 	const [weather, setWeather] = useState(null)
 	const [postList, setPostList] = useState(null)
 	const [showChart, setShowChart] = useState(true)
-	const [tempMeasure, setTempMeasure] = useState(true)
+
+	// Get tempMeasure from localStorage, default to true (Fahrenheit)
+	const getTempMeasure = () => {
+		const saved = localStorage.getItem("tempMeasure")
+		return saved !== null ? saved === "true" : true
+	}
+	const [tempMeasure, setTempMeasure] = useState(getTempMeasure)
+
+	// Listen for changes to tempMeasure in localStorage (from User component)
+	useEffect(() => {
+		const handleStorageChange = (e) => {
+			if (e.key === "tempMeasure") {
+				setTempMeasure(e.newValue === "true")
+			}
+		}
+
+		window.addEventListener("storage", handleStorageChange)
+
+		// Also listen for custom event for same-tab updates
+		const handleCustomStorageChange = () => {
+			const saved = localStorage.getItem("tempMeasure")
+			if (saved !== null) {
+				setTempMeasure(saved === "true")
+			}
+		}
+
+		window.addEventListener("tempMeasureChanged", handleCustomStorageChange)
+
+		return () => {
+			window.removeEventListener("storage", handleStorageChange)
+			window.removeEventListener(
+				"tempMeasureChanged",
+				handleCustomStorageChange
+			)
+		}
+	}, [])
 
 	const loadInfo = (res) => {
 		// console.log("load info res reviews", res.data.weather[0].reviews)
@@ -80,7 +115,6 @@ const Home = (props) => {
 				user={user}
 				msgAlert={msgAlert}
 				weather={weather}
-				onTempMeasureChange={setTempMeasure}
 			/>
 		</Container>
 	)

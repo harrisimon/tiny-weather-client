@@ -4,7 +4,7 @@ import { submitPost } from "../../api/weather"
 import { useNavigate } from "react-router-dom"
 
 const FloatingButtons = (props) => {
-	const { user, msgAlert, weather, onTempMeasureChange } = props
+	const { user, msgAlert, weather } = props
 	const navigate = useNavigate()
 
 	const [open, setOpen] = useState(false)
@@ -33,12 +33,6 @@ const FloatingButtons = (props) => {
 			const updatedPost = { [updatedName]: updatedValue }
 			return { ...prevPost, ...updatedPost }
 		})
-	}
-
-	const changeTempMeasure = () => {
-		if (onTempMeasureChange) {
-			onTempMeasureChange((prev) => !prev)
-		}
 	}
 
 	return (
@@ -70,14 +64,6 @@ const FloatingButtons = (props) => {
 					</Modal.Content>
 				</Modal>
 			)}
-
-			<Button
-				className="font"
-				color="grey"
-				onClick={changeTempMeasure}
-			>
-				Change Temp Measure
-			</Button>
 
 			<Button
 				color="black"
