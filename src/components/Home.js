@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { Container } from "semantic-ui-react"
+import { Container, Loader } from "semantic-ui-react"
+import PullToRefresh from "react-simple-pull-to-refresh"
 import { getLatestWeather } from "../api/weather"
 import Latest from "./Latest"
 import UserBar from "./shared/UserBar"
@@ -16,32 +17,62 @@ const Home = (props) => {
 		setWeather(res.data.weather[0])
 		setPostList(res.data.weather[0].reviews.slice(0).reverse())
 	}
-	useEffect(() => {
-		getLatestWeather().then((res) => {
+
+	const fetchWeatherData = async () => {
+		try {
+			const res = await getLatestWeather()
 			console.log("res", res.data.weather[0])
 			loadInfo(res)
-			// console.log("posts", postList)
-		})
+			return res
+		} catch (error) {
+			console.error("Error fetching weather data:", error)
+			msgAlert({
+				heading: "Error",
+				message: "Failed to refresh weather data",
+				variant: "danger",
+			})
+			throw error
+		}
+	}
 
-		// .then(setRefresh(false))
-
-		// console.log("refresh useeffect", refresh)
+	useEffect(() => {
+		fetchWeatherData()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh])
+
+	const handleRefresh = async () => {
+		return fetchWeatherData()
+	}
 
 	return (
 		<Container as="nav">
 			<UserBar />
-
-			<Latest
-				user={user}
-				msgAlert={msgAlert}
-				refresh={refresh}
-				triggerRefresh={() => setRefresh((prev) => !prev)}
-				weather={weather}
-				postList={postList}
-				showChart={showChart}
-				toggleChart={() => setShowChart((prev) => !prev)}
-			/>
+			<PullToRefresh
+				onRefresh={handleRefresh}
+				pullingContent={
+					<div style={{ textAlign: "center", padding: "20px" }}>
+						<Loader active inline="centered" />
+						<p>Pull down to refresh...</p>
+					</div>
+				}
+				refreshingContent={
+					<div style={{ textAlign: "center", padding: "20px" }}>
+						<Loader active inline="centered" />
+						<p>Refreshing...</p>
+					</div>
+				}
+			>
+				<Latest
+					user={user}
+					msgAlert={msgAlert}
+					refresh={refresh}
+					triggerRefresh={() => setRefresh((prev) => !prev)}
+					weather={weather}
+					postList={postList}
+					showChart={showChart}
+					toggleChart={() => setShowChart((prev) => !prev)}
+				/>
+			</PullToRefresh>
 		</Container>
 	)
 }
