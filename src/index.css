@@ -105,8 +105,10 @@ p {
 }
 
 .dash-temp-reading .temp {
-	font-size: clamp(1.45rem, 7vw, 2.25rem);
-	line-height: 1.05;
+	font-size: clamp(2.6rem, 14vmin, 4.5rem);
+	font-weight: 600;
+	line-height: 1.02;
+	letter-spacing: -0.02em;
 }
 
 .dash-humidity-reading {

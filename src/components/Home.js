@@ -12,7 +12,7 @@ const Home = (props) => {
 	const [weather, setWeather] = useState(null)
 	const [history24h, setHistory24h] = useState(null)
 	const [postList, setPostList] = useState(null)
-	const [showChart, setShowChart] = useState(false)
+	const [showChart, setShowChart] = useState(true)
 
 	// Get tempMeasure from localStorage, default to true (Fahrenheit)
 	const getTempMeasure = () => {
