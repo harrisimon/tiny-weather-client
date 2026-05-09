@@ -69,7 +69,7 @@ const Latest = (props) => {
 	}
 	return (
 		<Container style={{ paddingBottom: showChart ? "120px" : "0" }}>
-			<Grid>
+			<Grid stackable>
 				<Grid.Row>
 					<Grid.Column width={16}>
 						<div className="temp-label">
@@ -78,26 +78,33 @@ const Latest = (props) => {
 						<div className="reading">{temp}</div>
 					</Grid.Column>
 				</Grid.Row>
-				<Grid.Column width={8}>
-					<h4>Pressure</h4>
-					<PressureGauge
-						valueInHg={hPaToInHg(weather.pressure)}
-						label={`Barometric pressure ${pressure} inHg`}
-					/>
-					<div className="reading">
-						{pressure} <span className="pressure-unit">inHg</span>
-					</div>
-					<p
-						className="pressure-trend"
-						aria-live="polite"
-					>
-						{pressureTrendNotice}
-					</p>
-				</Grid.Column>
-				<Grid.Column widescreen={8}>
-					<h4>Humidity</h4>
-					<div className="reading">{humidity}</div>
-				</Grid.Column>
+				<Grid.Row columns={2}>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<div className="reading-block reading-block--pressure">
+							<h4>Pressure</h4>
+							<PressureGauge
+								valueInHg={hPaToInHg(weather.pressure)}
+								label={`Barometric pressure ${pressure} inHg`}
+							/>
+							<div className="reading reading--pressure-value">
+								{pressure}{" "}
+								<span className="pressure-unit">inHg</span>
+							</div>
+							<p
+								className="pressure-trend"
+								aria-live="polite"
+							>
+								{pressureTrendNotice}
+							</p>
+						</div>
+					</Grid.Column>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<div className="reading-block reading-block--humidity">
+							<h4>Humidity</h4>
+							<div className="reading">{humidity}</div>
+						</div>
+					</Grid.Column>
+				</Grid.Row>
 				<Grid.Row>
 					<Grid.Column width={16}>
 						<small>The last reading was taken</small>
