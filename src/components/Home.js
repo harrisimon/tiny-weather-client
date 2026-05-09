@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Container, Loader } from "semantic-ui-react"
 import PullToRefresh from "react-simple-pull-to-refresh"
-import { getLatestWeather } from "../api/weather"
+import { get24HourHistory, getLatestWeather } from "../api/weather"
 import Latest from "./Latest"
 import UserBar from "./shared/UserBar"
 import FloatingButtons from "./shared/FloatingButtons"
@@ -10,6 +10,7 @@ const Home = (props) => {
 	const { msgAlert, user } = props
 	const [refresh, setRefresh] = useState(false)
 	const [weather, setWeather] = useState(null)
+	const [history24h, setHistory24h] = useState(null)
 	const [postList, setPostList] = useState(null)
 	const [showChart, setShowChart] = useState(true)
 
@@ -56,20 +57,33 @@ const Home = (props) => {
 	}
 
 	const fetchWeatherData = async () => {
-		try {
-			const res = await getLatestWeather()
-			console.log("res", res.data.weather[0])
-			loadInfo(res)
-			return res
-		} catch (error) {
-			console.error("Error fetching weather data:", error)
-			msgAlert({
-				heading: "Error",
-				message: "Failed to refresh weather data",
-				variant: "danger",
-			})
-			throw error
+		const [latestResult, historyResult] = await Promise.allSettled([
+			getLatestWeather(),
+			get24HourHistory(),
+		])
+
+		if (historyResult.status === "fulfilled") {
+			const hist = historyResult.value?.data?.weather
+			setHistory24h(Array.isArray(hist) ? hist : [])
+		} else {
+			console.error("Failed to load 24h history", historyResult.reason)
+			setHistory24h([])
 		}
+
+		if (latestResult.status === "fulfilled") {
+			console.log("res", latestResult.value.data.weather[0])
+			loadInfo(latestResult.value)
+			return latestResult.value
+		}
+
+		const error = latestResult.reason
+		console.error("Error fetching weather data:", error)
+		msgAlert({
+			heading: "Error",
+			message: "Failed to refresh weather data",
+			variant: "danger",
+		})
+		throw error
 	}
 
 	useEffect(() => {
@@ -104,6 +118,7 @@ const Home = (props) => {
 						refresh={refresh}
 						triggerRefresh={() => setRefresh((prev) => !prev)}
 						weather={weather}
+						history24h={history24h}
 						postList={postList}
 						showChart={showChart}
 						toggleChart={() => setShowChart((prev) => !prev)}

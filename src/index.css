@@ -108,6 +108,22 @@ p {
 	font-family: "Unbounded", cursive;
 	font-size: x-large;
 }
+
+.pressure-gauge-wrap {
+	max-width: 220px;
+	margin: 6px auto 4px auto;
+}
+
+.pressure-trend {
+	font-size: 1rem;
+	margin: 6px 0 0;
+}
+
+.pressure-unit {
+	font-size: 0.95em;
+	font-weight: 600;
+	opacity: 0.85;
+}
 .floating-buttons {
 	position: fixed;
 	left: 0;

@@ -1,22 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
-import { get24HourHistory } from "../api/weather"
 
-export default function Past24HoursChart({ tempMeasure = true }) {
-	const [data, setData] = useState(null)
-
-	useEffect(() => {
-		get24HourHistory()
-			.then((res) => {
-				console.log("Chart data response:", res.data) // Debug log
-				setData(res.data.weather) // We know the structure is { weather: [...] }
-			})
-			.catch((err) => {
-				console.error("Failed to load 24h history", err)
-				setData([]) // fallback to empty array on error
-			})
-	}, [])
+export default function Past24HoursChart({ tempMeasure = true, historyWeather }) {
+	const data = historyWeather
 
 	if (!data) return <p>Loading...</p>
 

@@ -3,14 +3,28 @@ import { Button, Container, Grid, Card } from "semantic-ui-react"
 
 import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
+import PressureGauge from "./PressureGauge"
+import {
+	computePressureTrendHpa,
+	formatInHg,
+	hPaToInHg,
+} from "../utils/pressure"
 
 const Latest = (props) => {
-	const { weather, postList, showChart, toggleChart, tempMeasure } = props
+	const {
+		weather,
+		history24h,
+		postList,
+		showChart,
+		toggleChart,
+		tempMeasure,
+	} = props
 
 	let temp
 	let pressure
 	let humidity
 	let posttime
+	let pressureTrendNotice
 
 	if (weather !== null && postList !== null) {
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
@@ -23,9 +37,32 @@ const Latest = (props) => {
 		} else {
 			temp = <p className="temp">{weather.temperature}° C</p>
 		}
-		pressure = Math.round(weather.pressure * 100) / 100
+		pressure = formatInHg(weather.pressure)
 		humidity = <p>{Math.floor(weather.humidity * 100) / 100}</p>
 		posttime = <p>{time}</p>
+
+		if (history24h == null) {
+			pressureTrendNotice = "Trend loading…"
+		} else {
+			const dir = computePressureTrendHpa(
+				weather.pressure,
+				weather.createdAt,
+				history24h
+			)
+			const word = {
+				rising: "Rising",
+				falling: "Falling",
+				steady: "Steady",
+			}
+			const glyph = {
+				rising: "↑",
+				falling: "↓",
+				steady: "→",
+			}
+			pressureTrendNotice = dir
+				? `${word[dir]} ${glyph[dir]}`
+				: "Need an earlier sample to compare"
+		}
 	} else {
 		return <p>...loading</p>
 		// add in loading wheel
@@ -43,7 +80,19 @@ const Latest = (props) => {
 				</Grid.Row>
 				<Grid.Column width={8}>
 					<h4>Pressure</h4>
-					<div className="reading">{pressure} hPa</div>
+					<PressureGauge
+						valueInHg={hPaToInHg(weather.pressure)}
+						label={`Barometric pressure ${pressure} inHg`}
+					/>
+					<div className="reading">
+						{pressure} <span className="pressure-unit">inHg</span>
+					</div>
+					<p
+						className="pressure-trend"
+						aria-live="polite"
+					>
+						{pressureTrendNotice}
+					</p>
 				</Grid.Column>
 				<Grid.Column widescreen={8}>
 					<h4>Humidity</h4>
@@ -81,7 +130,12 @@ const Latest = (props) => {
 				{showChart ? "Hide Past 24 Hours" : "Show Past 24 Hours"}
 			</Button>
 
-			{showChart && <Past24HoursChart tempMeasure={tempMeasure} />}
+			{showChart && (
+				<Past24HoursChart
+					tempMeasure={tempMeasure}
+					historyWeather={history24h}
+				/>
+			)}
 		</Container>
 	)
 }
