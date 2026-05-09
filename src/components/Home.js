@@ -12,7 +12,7 @@ const Home = (props) => {
 	const [weather, setWeather] = useState(null)
 	const [history24h, setHistory24h] = useState(null)
 	const [postList, setPostList] = useState(null)
-	const [showChart, setShowChart] = useState(true)
+	const [showChart, setShowChart] = useState(false)
 
 	// Get tempMeasure from localStorage, default to true (Fahrenheit)
 	const getTempMeasure = () => {
@@ -113,7 +113,7 @@ const Home = (props) => {
 					</div>
 				}
 			>
-				<div style={{ paddingTop: "10px" }}>
+				<div style={{ paddingTop: "4px" }}>
 					<Latest
 						refresh={refresh}
 						triggerRefresh={() => setRefresh((prev) => !prev)}

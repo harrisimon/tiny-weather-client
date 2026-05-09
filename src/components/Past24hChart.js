@@ -2,7 +2,11 @@ import React from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
 
-export default function Past24HoursChart({ tempMeasure = true, historyWeather }) {
+export default function Past24HoursChart({
+	tempMeasure = true,
+	historyWeather,
+	compact = false,
+}) {
 	const data = historyWeather
 
 	if (!data) return <p>Loading...</p>
@@ -34,39 +38,72 @@ export default function Past24HoursChart({ tempMeasure = true, historyWeather })
 
 	const chartOptions = {
 		responsive: true,
-		maintainAspectRatio: true,
-		aspectRatio: 2,
+		maintainAspectRatio: !compact,
+		...(compact
+			? {}
+			: {
+					aspectRatio: 2,
+			  }),
+		layout: compact
+			? { padding: { top: 4, bottom: 0, left: 0, right: 4 } }
+			: undefined,
 		plugins: {
 			legend: {
 				display: true,
-				position: "top",
+				position: compact ? "bottom" : "top",
+				labels: {
+					boxWidth: compact ? 10 : 40,
+					font: { size: compact ? 9 : 12 },
+					padding: compact ? 6 : 12,
+				},
 			},
 		},
 		scales: {
 			x: {
 				ticks: {
-					maxRotation: 45,
-					minRotation: 45,
+					maxRotation: compact ? 0 : 45,
+					minRotation: compact ? 0 : 45,
+					autoSkip: true,
+					maxTicksLimit: compact ? 6 : undefined,
 					font: {
-						size: 10,
+						size: compact ? 8 : 10,
 					},
+				},
+				grid: {
+					display: !compact,
 				},
 			},
 			y: {
 				ticks: {
 					font: {
-						size: 10,
+						size: compact ? 8 : 10,
 					},
+					maxTicksLimit: compact ? 5 : undefined,
+				},
+				grid: {
+					color: compact ? "rgba(255,255,255,0.06)" : undefined,
 				},
 			},
 		},
 	}
 
 	return (
-		<div className="chart-container">
+		<div
+			className={
+				compact ? "chart-container chart-container--compact" : "chart-container"
+			}
+		>
 			<div className="chart-inner">
-				<h2 className="chart-title">Past 24 Hours Temperature</h2>
-				<Line data={chartData} options={chartOptions} />
+				<h2
+					className={
+						compact ? "chart-title chart-title--compact" : "chart-title"
+					}
+				>
+					Past 24 Hours Temperature
+				</h2>
+				<div className={compact ? "chart-canvas-wrap chart-canvas-wrap--compact" : "chart-canvas-wrap"}>
+					<Line data={chartData} options={chartOptions} />
+				</div>
 			</div>
 		</div>
 	)

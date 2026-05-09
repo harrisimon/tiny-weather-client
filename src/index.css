@@ -3,8 +3,9 @@
 }
 #root {
 	font-family: "Unbounded", cursive;
-	width: 100vw;
-	overflow-x: hidden;
+	width: 100%;
+	max-width: 100vw;
+	overflow-x: clip;
 	--app-height: 100%;
 	height: 100%;
 	height: -webkit-fill-available;
@@ -65,6 +66,102 @@ p {
 	padding: 0;
 	margin: 0;
 }
+
+.latest-container.ui.container {
+	width: 100% !important;
+	max-width: 720px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+}
+
+/* Temp | Pressure | Humidity — one band, aligned labels + values */
+.dashboard-overview {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+	gap: 0.2rem 0.35rem;
+	align-items: start;
+	padding: 0.15rem 0 0.25rem;
+	overflow: visible;
+}
+
+.dashboard-overview h4 {
+	font-size: 0.8rem;
+	font-weight: 700;
+	margin: 0 0 0.1rem 0 !important;
+	text-align: center;
+	line-height: 1.2;
+	opacity: 0.95;
+}
+
+.dash-cell {
+	min-width: 0;
+	overflow: visible;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.dash-temp-reading .temp {
+	font-size: clamp(1.45rem, 7vw, 2.25rem);
+	line-height: 1.05;
+}
+
+.dash-humidity-reading {
+	font-size: clamp(1.2rem, 5vw, 1.5rem);
+	line-height: 1.2;
+	margin-top: 0.15rem;
+}
+
+.dash-humidity-reading p {
+	margin: 0;
+}
+
+.dash-pressure .reading--pressure-value {
+	font-size: clamp(1rem, 4vw, 1.25rem);
+	margin: 0.1rem 0 0 !important;
+	line-height: 1.2;
+}
+
+.dash-meta {
+	text-align: center;
+	font-size: 0.72rem;
+	line-height: 1.35;
+	margin: 0.2rem 0 0.35rem;
+	opacity: 0.88;
+}
+
+.dash-meta small {
+	display: block;
+	margin-bottom: 0.1rem;
+}
+
+.dash-meta p {
+	margin: 0;
+	font-size: inherit;
+}
+
+@media (max-width: 500px) {
+	.dashboard-overview {
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+	}
+
+	.dash-temp {
+		grid-column: 1 / -1;
+	}
+
+	.dash-pressure {
+		grid-column: 1;
+	}
+
+	.dash-humidity {
+		grid-column: 2;
+		justify-self: stretch;
+	}
+}
 .title {
 	font-size: 3rem;
 	transition: hover 0.6s;
@@ -109,43 +206,23 @@ p {
 	font-size: x-large;
 }
 
-.reading-block--pressure,
-.reading-block--humidity {
-	padding: 0.35rem 0;
-}
-
-.reading-block--pressure {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	gap: 0.15rem;
-}
-
-.reading-block--humidity {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-}
-
-.reading-block--humidity .reading {
-	margin-top: 0.35rem;
-}
-
 .pressure-gauge-wrap {
 	width: 100%;
-	max-width: min(280px, 92vw);
-	margin: 0.35rem auto 0.15rem;
+	max-width: min(210px, 46vw);
+	margin: 0.05rem auto 0;
 	display: flex;
 	justify-content: center;
+	overflow: visible;
+	box-sizing: content-box;
+	padding: 6px 4px 2px;
 }
 
 .pressure-gauge-svg {
 	width: 100%;
-	max-width: 260px;
+	max-width: 200px;
 	height: auto;
 	display: block;
+	overflow: visible;
 }
 
 .reading--pressure-value {
@@ -155,106 +232,53 @@ p {
 }
 
 .pressure-trend {
-	font-size: 0.95rem;
-	margin: 0.35rem 0 0;
+	font-size: clamp(0.72rem, 2.8vw, 0.85rem);
+	margin: 0.15rem 0 0;
 	opacity: 0.92;
-	max-width: 18rem;
+	max-width: 11rem;
+	line-height: 1.25;
 }
 
 .pressure-unit {
-	font-size: 0.95em;
+	font-size: 0.9em;
 	font-weight: 600;
 	opacity: 0.85;
 }
 
-/* Desktop / tablet: pressure gauge beside value + trend */
-@media (min-width: 768px) {
-	.reading-block--humidity {
-		align-items: flex-start;
-		text-align: left;
-		padding-top: 0.5rem;
-	}
-
-	.reading-block--humidity h4 {
-		width: 100%;
-		text-align: center;
-	}
-
-	.reading-block--pressure {
-		display: grid;
-		grid-template-columns: minmax(140px, 220px) 1fr;
-		grid-template-areas:
-			"title title"
-			"gauge value"
-			"gauge trend";
-		column-gap: 1rem;
-		row-gap: 0.2rem;
-		align-items: center;
-		text-align: left;
-	}
-
-	.reading-block--pressure h4 {
-		grid-area: title;
-		text-align: center;
-		margin-bottom: 0.25rem;
-	}
-
-	.reading-block--pressure .pressure-gauge-wrap {
-		grid-area: gauge;
-		justify-self: center;
-		align-self: center;
-		margin: 0;
-		max-width: 220px;
-	}
-
-	.reading-block--pressure .pressure-gauge-svg {
-		max-width: 220px;
-	}
-
-	.reading-block--pressure .reading--pressure-value {
-		grid-area: value;
-		align-self: end;
-		margin-top: 0 !important;
-		justify-self: start;
-	}
-
-	.reading-block--pressure .pressure-trend {
-		grid-area: trend;
-		align-self: start;
-		margin-top: 0.15rem;
-		justify-self: start;
-	}
-}
-
-@media (min-width: 992px) {
-	.reading-block--pressure {
-		grid-template-columns: minmax(180px, 240px) 1fr;
-		column-gap: 1.25rem;
-	}
-
-	.reading-block--pressure .pressure-gauge-wrap,
-	.reading-block--pressure .pressure-gauge-svg {
-		max-width: 240px;
-	}
-}
 .floating-buttons {
 	position: fixed;
 	left: 0;
 	bottom: 0;
 	right: 0;
 	font-family: "Unbounded", cursive;
-	background-color: rgb(51, 51, 51); /* Match your app background */
-	padding: 1rem;
-	z-index: 9999; /* Ensure buttons float over all elements */
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Optional: shadow for separation */
+	background-color: rgb(51, 51, 51);
+	padding: 0.55rem 0.65rem;
+	z-index: 9999;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 0.35rem;
 }
 
-/* Add padding to container to prevent content from being hidden behind fixed buttons */
+.floating-buttons .ui.button.font {
+	font-size: 1.05rem;
+	padding-top: 0.65rem;
+	padding-bottom: 0.65rem;
+}
+
 nav.ui.container {
-	padding-bottom: 180px; /* Adjust based on floating buttons height */
+	padding-bottom: 118px;
+}
+
+.chart-toggle-btn.ui.button {
+	margin: 0.35rem 0 0.25rem !important;
+	padding: 0.55rem 0.75rem !important;
+	font-size: 0.95rem !important;
+}
+
+.reviews--home {
+	max-height: min(100px, 22vh);
+	margin-top: 0.25rem;
 }
 
 .ui.card > .content > .header:not(.ui),
@@ -346,6 +370,26 @@ nav.ui.container {
 	font-size: 1.5rem; /* Make title smaller on mobile */
 }
 
+.chart-container--compact {
+	padding: 0 0.2rem;
+}
+
+.chart-title--compact {
+	font-size: 0.95rem !important;
+	margin: 0.1rem 0 0 !important;
+	line-height: 1.2;
+}
+
+.chart-canvas-wrap {
+	position: relative;
+	width: 100%;
+}
+
+.chart-canvas-wrap--compact {
+	height: 125px;
+	max-height: 26vh;
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
 	.chart-inner {
@@ -354,5 +398,9 @@ nav.ui.container {
 
 	.chart-title {
 		font-size: 1.2rem;
+	}
+
+	.chart-canvas-wrap--compact {
+		height: 115px;
 	}
 }

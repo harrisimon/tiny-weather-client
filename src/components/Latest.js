@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Container, Grid, Card } from "semantic-ui-react"
+import { Button, Container, Card } from "semantic-ui-react"
 
 import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
@@ -68,71 +68,58 @@ const Latest = (props) => {
 		// add in loading wheel
 	}
 	return (
-		<Container style={{ paddingBottom: showChart ? "120px" : "0" }}>
-			<Grid stackable>
-				<Grid.Row>
-					<Grid.Column width={16}>
-						<div className="temp-label">
-							<h4>Temp</h4>
-						</div>
-						<div className="reading">{temp}</div>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row columns={2}>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
-						<div className="reading-block reading-block--pressure">
-							<h4>Pressure</h4>
-							<PressureGauge
-								valueInHg={hPaToInHg(weather.pressure)}
-								label={`Barometric pressure ${pressure} inHg`}
-							/>
-							<div className="reading reading--pressure-value">
-								{pressure}{" "}
-								<span className="pressure-unit">inHg</span>
-							</div>
-							<p
-								className="pressure-trend"
-								aria-live="polite"
-							>
-								{pressureTrendNotice}
-							</p>
-						</div>
-					</Grid.Column>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
-						<div className="reading-block reading-block--humidity">
-							<h4>Humidity</h4>
-							<div className="reading">{humidity}</div>
-						</div>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column width={16}>
-						<small>The last reading was taken</small>
+		<Container
+			className="latest-container"
+			style={{ paddingBottom: showChart ? "0.5rem" : "0" }}
+		>
+			<div className="dashboard-overview">
+				<section className="dash-cell dash-temp">
+					<h4>Temp</h4>
+					<div className="reading dash-temp-reading">{temp}</div>
+				</section>
+				<section className="dash-cell dash-pressure">
+					<h4>Pressure</h4>
+					<PressureGauge
+						valueInHg={hPaToInHg(weather.pressure)}
+						label={`Barometric pressure ${pressure} inHg`}
+					/>
+					<div className="reading reading--pressure-value">
+						{pressure}{" "}
+						<span className="pressure-unit">inHg</span>
+					</div>
+					<p className="pressure-trend" aria-live="polite">
+						{pressureTrendNotice}
+					</p>
+				</section>
+				<section className="dash-cell dash-humidity">
+					<h4>Humidity</h4>
+					<div className="reading dash-humidity-reading">
+						{humidity}
+					</div>
+				</section>
+			</div>
 
-						<div>{posttime}</div>
-					</Grid.Column>
-				</Grid.Row>
-			</Grid>
+			<div className="dash-meta">
+				<small>The last reading was taken</small>
+				<div>{posttime}</div>
+			</div>
+
 			{postList && postList.length > 0 && <h3>Posts</h3>}
 
 			{postList && postList.length > 0 && (
-				<div className="reviews">
+				<div className="reviews reviews--home">
 					<Card.Group centered>
 						<div className="reading">
-							{/* {reviews} */}
-
 							<CardStack weather={weather} postList={postList} />
 						</div>
 					</Card.Group>
 				</div>
 			)}
 
-			{/* NEW: chart toggle button + chart, BEFORE the floating buttons */}
 			<Button
 				primary
-				className="font"
+				className="font chart-toggle-btn"
 				onClick={toggleChart}
-				style={{ marginTop: "1rem", marginBottom: "1rem" }}
 			>
 				{showChart ? "Hide Past 24 Hours" : "Show Past 24 Hours"}
 			</Button>
@@ -141,6 +128,7 @@ const Latest = (props) => {
 				<Past24HoursChart
 					tempMeasure={tempMeasure}
 					historyWeather={history24h}
+					compact
 				/>
 			)}
 		</Container>

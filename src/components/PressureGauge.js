@@ -5,6 +5,7 @@ const TICK_POSITIONS = [0, 0.25, 0.5, 0.75, 1]
 /**
  * Semi-circular barometric gauge for inHg.
  * minInHg/maxInHg span typical sea-level-ish surface range (~28–31).
+ * viewBox includes padding so strokes, filter, and top tick are never clipped.
  */
 export default function PressureGauge({
 	valueInHg,
@@ -24,10 +25,10 @@ export default function PressureGauge({
 		maxInHg > minInHg ? (clamped - minInHg) / (maxInHg - minInHg) : 0.5
 
 	const cx = 100
-	const cy = 92
-	const rTrack = 62
-	const rNeedle = 50
-	const rTicksInner = rTrack - 6
+	const cy = 86
+	const rTrack = 48
+	const rNeedle = 40
+	const rTicksInner = rTrack - 5
 	const rTicksOuter = rTrack + 2
 
 	const theta = Math.PI * (1 - t)
@@ -41,13 +42,15 @@ export default function PressureGauge({
 
 	const tickAngles = TICK_POSITIONS.map((u) => Math.PI * (1 - u))
 
+	/* Min / max sit below the arc ends, centered under each endpoint */
+	const labelY = cy + 20
+
 	return (
 		<div className="pressure-gauge-wrap">
 			<svg
 				className="pressure-gauge-svg"
-				viewBox="0 0 200 124"
-				width="200"
-				height="124"
+				viewBox="4 10 192 100"
+				preserveAspectRatio="xMidYMid meet"
 				role="img"
 				aria-label={label}
 			>
@@ -57,9 +60,9 @@ export default function PressureGauge({
 						id={gradId}
 						gradientUnits="userSpaceOnUse"
 						x1={sx}
-						y1={cy - rTrack * 0.5}
+						y1={cy - rTrack * 0.45}
 						x2={ex}
-						y2={cy - rTrack * 0.5}
+						y2={cy - rTrack * 0.45}
 					>
 						<stop offset="0%" stopColor="#2a8faf" />
 						<stop offset="50%" stopColor="#3db8a8" />
@@ -67,34 +70,33 @@ export default function PressureGauge({
 					</linearGradient>
 					<filter
 						id={filterId}
-						x="-40%"
-						y="-40%"
-						width="180%"
-						height="180%"
+						x="-50%"
+						y="-50%"
+						width="200%"
+						height="200%"
 					>
 						<feDropShadow
 							dx="0"
 							dy="1"
-							stdDeviation="1.2"
+							stdDeviation="1"
 							floodColor="#000"
-							floodOpacity="0.55"
+							floodOpacity="0.5"
 						/>
 					</filter>
 				</defs>
 
-				{/* Full background track — reads as one continuous arc */}
 				<path
 					d={`M ${sx} ${sy} A ${rTrack} ${rTrack} 0 0 0 ${ex} ${ey}`}
 					fill="none"
 					stroke="rgba(255,255,255,0.14)"
-					strokeWidth="14"
+					strokeWidth="12"
 					strokeLinecap="round"
 				/>
 				<path
 					d={`M ${sx} ${sy} A ${rTrack} ${rTrack} 0 0 0 ${ex} ${ey}`}
 					fill="none"
 					stroke={`url(#${gradId})`}
-					strokeWidth="10"
+					strokeWidth="8"
 					strokeLinecap="round"
 				/>
 
@@ -111,41 +113,40 @@ export default function PressureGauge({
 							x2={x2}
 							y2={y2}
 							stroke="rgba(255,255,255,0.35)"
-							strokeWidth={i === 0 || i === 4 ? 2 : 1.25}
+							strokeWidth={i === 0 || i === 4 ? 1.75 : 1}
 							strokeLinecap="round"
 						/>
 					)
 				})}
 
 				<text
-					x={sx - 2}
-					y={cy + 18}
-					fill="rgba(255,255,255,0.45)"
-					fontSize="10"
-					textAnchor="start"
-					fontFamily="system-ui, sans-serif"
+					x={sx}
+					y={labelY}
+					fill="rgba(255,255,255,0.5)"
+					fontSize="9"
+					textAnchor="middle"
+					fontFamily="'Unbounded', system-ui, sans-serif"
 				>
 					{minInHg}
 				</text>
 				<text
-					x={ex + 2}
-					y={cy + 18}
-					fill="rgba(255,255,255,0.45)"
-					fontSize="10"
-					textAnchor="end"
-					fontFamily="system-ui, sans-serif"
+					x={ex}
+					y={labelY}
+					fill="rgba(255,255,255,0.5)"
+					fontSize="9"
+					textAnchor="middle"
+					fontFamily="'Unbounded', system-ui, sans-serif"
 				>
 					{maxInHg}
 				</text>
 
-				{/* Needle: bright body + dark outline for contrast on dark UI */}
 				<line
 					x1={cx}
 					y1={cy}
 					x2={nx}
 					y2={ny}
 					stroke="#0d0d0d"
-					strokeWidth="6"
+					strokeWidth="5"
 					strokeLinecap="round"
 					opacity="0.85"
 				/>
@@ -155,13 +156,13 @@ export default function PressureGauge({
 					x2={nx}
 					y2={ny}
 					stroke="#e8fffa"
-					strokeWidth="3.5"
+					strokeWidth="3"
 					strokeLinecap="round"
 					filter={`url(#${filterId})`}
 				/>
-				<circle cx={cx} cy={cy} r="8" fill="#1a1a1a" />
-				<circle cx={cx} cy={cy} r="5" fill="#5ec4b5" />
-				<circle cx={cx} cy={cy} r="2.2" fill="#f5fffd" />
+				<circle cx={cx} cy={cy} r="6.5" fill="#1a1a1a" />
+				<circle cx={cx} cy={cy} r="4" fill="#5ec4b5" />
+				<circle cx={cx} cy={cy} r="1.8" fill="#f5fffd" />
 			</svg>
 		</div>
 	)
