@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Container, Card } from "semantic-ui-react"
+import { Container, Card } from "semantic-ui-react"
 
 import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
@@ -16,7 +16,6 @@ const Latest = (props) => {
 		history24h,
 		postList,
 		showChart,
-		toggleChart,
 		tempMeasure,
 	} = props
 
@@ -133,14 +132,6 @@ const Latest = (props) => {
 					</Card.Group>
 				</div>
 			)}
-
-			<Button
-				primary
-				className="font chart-toggle-btn"
-				onClick={toggleChart}
-			>
-				{showChart ? "Hide Past 24 Hours" : "Show Past 24 Hours"}
-			</Button>
 
 			{showChart && (
 				<Past24HoursChart
