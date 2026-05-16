@@ -32,8 +32,8 @@ export default function PressureGauge({
   const rTicksInner = rTrack - 5
   const rTicksOuter = rTrack + 2
 
-  // Needle position (upright semi-circle)
-  const theta = Math.PI * t
+  // Needle position (upright semi-circle): low values point left, high values point right.
+  const theta = Math.PI * (1 - t)
   const nx = cx + rNeedle * Math.cos(theta)
   const ny = cy - rNeedle * Math.sin(theta) // SVG y-axis goes down
 
