@@ -8,6 +8,36 @@ export function formatInHg(hPa, decimals = 2) {
 	return hPaToInHg(hPa).toFixed(decimals)
 }
 
+const DEFAULT_PRESSURE_RANGE_INHG = {
+	minInHg: 28.6,
+	maxInHg: 30.9,
+}
+
+const PRESSURE_RANGE_PADDING_INHG = 0.5
+
+export function computePressureGaugeRangeInHg(currentHpa, history) {
+	const values = []
+
+	if (currentHpa != null && Number.isFinite(Number(currentHpa))) {
+		values.push(hPaToInHg(Number(currentHpa)))
+	}
+
+	if (history && history.length) {
+		history.forEach((entry) => {
+			if (entry.pressure != null && Number.isFinite(Number(entry.pressure))) {
+				values.push(hPaToInHg(Number(entry.pressure)))
+			}
+		})
+	}
+
+	if (!values.length) return DEFAULT_PRESSURE_RANGE_INHG
+
+	return {
+		minInHg: Math.min(...values) - PRESSURE_RANGE_PADDING_INHG,
+		maxInHg: Math.max(...values) + PRESSURE_RANGE_PADDING_INHG,
+	}
+}
+
 /** Compare current reading to nearest older history point for trend arrow. */
 export function computePressureTrendHpa(currentHpa, currentCreatedAt, history) {
 	if (!history || !history.length || currentHpa == null) return null

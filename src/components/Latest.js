@@ -5,6 +5,7 @@ import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
 import PressureGauge from "./PressureGauge"
 import {
+	computePressureGaugeRangeInHg,
 	computePressureTrendHpa,
 	formatInHg,
 	hPaToInHg,
@@ -26,6 +27,7 @@ const Latest = (props) => {
 	let humidityStatus
 	let posttime
 	let pressureTrendNotice
+	let pressureGaugeRange
 
 	if (weather !== null && postList !== null) {
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
@@ -39,6 +41,10 @@ const Latest = (props) => {
 			temp = <p className="temp">{weather.temperature}° C</p>
 		}
 		pressure = formatInHg(weather.pressure)
+		pressureGaugeRange = computePressureGaugeRangeInHg(
+			weather.pressure,
+			history24h
+		)
 		humidityValue = Math.min(100, Math.max(0, Number(weather.humidity) || 0))
 		humidity = humidityValue.toFixed(1).replace(/\.0$/, "")
 		humidityStatus =
@@ -85,6 +91,8 @@ const Latest = (props) => {
 					<h4>Pressure</h4>
 					<PressureGauge
 						valueInHg={hPaToInHg(weather.pressure)}
+						minInHg={pressureGaugeRange.minInHg}
+						maxInHg={pressureGaugeRange.maxInHg}
 						label={`Barometric pressure ${pressure} inHg`}
 					/>
 					<div className="reading reading--pressure-value">

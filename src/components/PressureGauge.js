@@ -134,7 +134,7 @@ export default function PressureGauge({
           textAnchor="middle"
           fontFamily="'Unbounded', system-ui, sans-serif"
         >
-          {minInHg}
+          {minInHg.toFixed(2)}
         </text>
         <text
           x={ex}
@@ -144,7 +144,7 @@ export default function PressureGauge({
           textAnchor="middle"
           fontFamily="'Unbounded', system-ui, sans-serif"
         >
-          {maxInHg}
+          {maxInHg.toFixed(2)}
         </text>
 
         {/* Needle */}
