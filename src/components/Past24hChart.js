@@ -1,13 +1,45 @@
 import React from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
+import { hPaToInHg } from "../utils/pressure"
+
+const CHART_METRICS = {
+	temperature: {
+		title: "Past 24 Hours Temperature",
+		label: (tempMeasure) =>
+			tempMeasure ? "Temperature (°F)" : "Temperature (°C)",
+		value: (entry, tempMeasure) =>
+			tempMeasure
+				? Math.round(entry.temperature * (9 / 5) + 32)
+				: Math.round(entry.temperature * 10) / 10,
+	},
+	pressure: {
+		title: "Past 24 Hours Pressure",
+		label: () => "Pressure (inHg)",
+		value: (entry) => Math.round(hPaToInHg(entry.pressure) * 100) / 100,
+		borderColor: "#f5fffd",
+		backgroundColor: "rgba(245,255,253,0.16)",
+	},
+	humidity: {
+		title: "Past 24 Hours Humidity",
+		label: () => "Humidity (%)",
+		value: (entry) => Math.round(Number(entry.humidity) * 10) / 10,
+		borderColor: "#7ee8d8",
+		backgroundColor: "rgba(126,232,216,0.16)",
+	},
+}
 
 export default function Past24HoursChart({
 	tempMeasure = true,
 	historyWeather,
 	compact = false,
+	metric = "temperature",
 }) {
-	const data = historyWeather
+	const metricConfig = CHART_METRICS[metric] || CHART_METRICS.temperature
+	const data = historyWeather?.filter((entry) => {
+		const key = metric === "temperature" ? "temperature" : metric
+		return entry[key] != null && Number.isFinite(Number(entry[key]))
+	})
 
 	if (!data) return <p>Loading...</p>
 
@@ -22,13 +54,10 @@ export default function Past24HoursChart({
 		),
 		datasets: [
 			{
-				label: tempMeasure ? "Temperature (°F)" : "Temperature (°C)",
-				data: data.map((entry) => {
-					// Convert to Fahrenheit if tempMeasure is true, otherwise use Celsius
-					return tempMeasure
-						? Math.round(entry.temperature * (9 / 5) + 32)
-						: Math.round(entry.temperature * 10) / 10 // Round to 1 decimal for Celsius
-				}),
+				label: metricConfig.label(tempMeasure),
+				data: data.map((entry) => metricConfig.value(entry, tempMeasure)),
+				borderColor: metricConfig.borderColor,
+				backgroundColor: metricConfig.backgroundColor,
 				borderWidth: 2,
 				tension: 0.2,
 				pointRadius: 0,
@@ -99,7 +128,7 @@ export default function Past24HoursChart({
 						compact ? "chart-title chart-title--compact" : "chart-title"
 					}
 				>
-					Past 24 Hours Temperature
+					{metricConfig.title}
 				</h2>
 				<div className={compact ? "chart-canvas-wrap chart-canvas-wrap--compact" : "chart-canvas-wrap"}>
 					<Line data={chartData} options={chartOptions} />

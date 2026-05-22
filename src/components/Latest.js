@@ -135,6 +135,24 @@ const Latest = (props) => {
 				</section>
 			</div>
 
+			{showChart && (
+				<div
+					className="secondary-charts"
+					aria-label="Past 24 hour pressure and humidity charts"
+				>
+					<Past24HoursChart
+						historyWeather={history24h}
+						compact
+						metric="pressure"
+					/>
+					<Past24HoursChart
+						historyWeather={history24h}
+						compact
+						metric="humidity"
+					/>
+				</div>
+			)}
+
 			<div className="dash-meta">
 				<small>The last reading was taken</small>
 				<div>{posttime}</div>
@@ -150,14 +168,6 @@ const Latest = (props) => {
 						</div>
 					</Card.Group>
 				</div>
-			)}
-
-			{showChart && (
-				<Past24HoursChart
-					tempMeasure={tempMeasure}
-					historyWeather={history24h}
-					compact
-				/>
 			)}
 		</Container>
 	)

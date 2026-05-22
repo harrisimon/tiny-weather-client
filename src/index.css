@@ -446,6 +446,32 @@ nav.ui.container {
 	padding: 0 0.2rem;
 }
 
+.secondary-charts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.25rem;
+	margin: 0.15rem 0 0.2rem;
+}
+
+.secondary-charts .chart-container--compact {
+	padding: 0;
+	min-width: 0;
+}
+
+.secondary-charts .chart-inner {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.secondary-charts .chart-title--compact {
+	font-size: 0.72rem !important;
+}
+
+.secondary-charts .chart-canvas-wrap--compact {
+	height: 82px;
+	max-height: 16vh;
+}
+
 .chart-title--compact {
 	font-size: 0.95rem !important;
 	margin: 0.1rem 0 0 !important;
@@ -474,5 +500,9 @@ nav.ui.container {
 
 	.chart-canvas-wrap--compact {
 		height: 115px;
+	}
+
+	.secondary-charts .chart-canvas-wrap--compact {
+		height: 76px;
 	}
 }
