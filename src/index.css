@@ -27,7 +27,7 @@ body {
 }
 
 nav.ui.container .ui.header {
-	margin: 12px;
+	margin: 0.1rem 0 0.2rem;
 	font-family: "Unbounded", cursive;
 }
 .ui.inverted.vertical.segment {
@@ -332,6 +332,7 @@ p {
 }
 
 nav.ui.container {
+	position: relative;
 	padding-bottom: 0;
 }
 
@@ -373,7 +374,17 @@ nav.ui.container {
 .sign-in {
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 8px;
+	position: absolute;
+	top: 0.15rem;
+	right: 0.35rem;
+	z-index: 2;
+	margin: 0;
+}
+
+.sign-in .ui.icon.button {
+	width: 42px;
+	min-height: 38px;
+	padding: 0.6rem !important;
 }
 .user-buttons {
 	display: flex;
@@ -464,14 +475,14 @@ nav.ui.container {
 }
 
 .metric-charts .chart-title--compact {
-	font-size: 0.64rem !important;
+	font-size: 0.7rem !important;
 	margin: 0 !important;
 	line-height: 1.05;
 }
 
 .metric-charts .chart-canvas-wrap--compact {
-	height: 46px;
-	max-height: 8vh;
+	height: 72px;
+	max-height: 11vh;
 }
 
 .chart-title--compact {
@@ -505,6 +516,6 @@ nav.ui.container {
 	}
 
 	.metric-charts .chart-canvas-wrap--compact {
-		height: 42px;
+		height: 66px;
 	}
 }
