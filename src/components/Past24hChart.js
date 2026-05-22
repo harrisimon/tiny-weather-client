@@ -109,7 +109,13 @@ export default function Past24HoursChart({
 					font: {
 						size: mini ? 7 : compact ? 8 : 10,
 					},
-					maxTicksLimit: mini ? 3 : compact ? 5 : undefined,
+					maxTicksLimit: mini
+						? metric === "temperature"
+							? 4
+							: 3
+						: compact
+							? 5
+							: undefined,
 				},
 				grid: {
 					color: compact ? "rgba(255,255,255,0.06)" : undefined,
@@ -122,7 +128,7 @@ export default function Past24HoursChart({
 		<div
 			className={
 				compact
-					? `chart-container chart-container--compact${mini ? " chart-container--mini" : ""}`
+					? `chart-container chart-container--compact chart-container--${metric}${mini ? " chart-container--mini" : ""}`
 					: "chart-container"
 			}
 		>

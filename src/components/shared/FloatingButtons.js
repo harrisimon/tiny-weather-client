@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Button, Modal, Form, TextArea } from "semantic-ui-react"
 import { submitPost } from "../../api/weather"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const FloatingButtons = (props) => {
 	const { user, msgAlert, weather } = props
@@ -65,13 +65,23 @@ const FloatingButtons = (props) => {
 				</Modal>
 			)}
 
-			<Button
-				color="black"
-				className="font"
-				onClick={() => setOpen(!open)}
-			>
-				About this site
-			</Button>
+			<div className="floating-buttons__secondary">
+				<Button
+					as={Link}
+					to="/user"
+					color="grey"
+					icon="user"
+					className="font profile-action"
+					aria-label="Profile"
+				/>
+				<Button
+					color="black"
+					className="font"
+					onClick={() => setOpen(!open)}
+				>
+					About this site
+				</Button>
+			</div>
 
 			<Modal
 				onClose={() => setOpen(false)}
@@ -106,4 +116,3 @@ const FloatingButtons = (props) => {
 }
 
 export default FloatingButtons
-

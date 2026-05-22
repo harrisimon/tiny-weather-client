@@ -331,6 +331,20 @@ p {
 	padding-bottom: 0.78rem;
 }
 
+.floating-buttons__secondary {
+	display: grid;
+	grid-template-columns: 58px minmax(0, 1fr);
+	gap: 0.45rem;
+}
+
+.floating-buttons .ui.button.profile-action {
+	min-height: 52px;
+	padding: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 nav.ui.container {
 	position: relative;
 	padding-bottom: 0;
@@ -370,21 +384,6 @@ nav.ui.container {
 }
 .ui.modal > .header:not(.ui) {
 	font-family: "Unbounded", cursive;
-}
-.sign-in {
-	display: flex;
-	justify-content: flex-end;
-	position: absolute;
-	top: 0.15rem;
-	right: 0.35rem;
-	z-index: 2;
-	margin: 0;
-}
-
-.sign-in .ui.icon.button {
-	width: 42px;
-	min-height: 38px;
-	padding: 0.6rem !important;
 }
 .user-buttons {
 	display: flex;
@@ -481,8 +480,13 @@ nav.ui.container {
 }
 
 .metric-charts .chart-canvas-wrap--compact {
-	height: 72px;
+	height: 60px;
 	max-height: 11vh;
+}
+
+.metric-charts .chart-container--temperature .chart-canvas-wrap--compact {
+	height: 92px;
+	max-height: 15vh;
 }
 
 .chart-title--compact {
@@ -516,6 +520,10 @@ nav.ui.container {
 	}
 
 	.metric-charts .chart-canvas-wrap--compact {
-		height: 66px;
+		height: 54px;
+	}
+
+	.metric-charts .chart-container--temperature .chart-canvas-wrap--compact {
+		height: 88px;
 	}
 }

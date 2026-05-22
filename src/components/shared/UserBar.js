@@ -1,4 +1,4 @@
-import {  Header, Button } from "semantic-ui-react"
+import { Header } from "semantic-ui-react"
 import { Link } from 'react-router-dom'
 
 const UserBar = (props) => {
@@ -6,14 +6,6 @@ const UserBar = (props) => {
 
 	return (
         <>
-        
-			<div className="sign-in">
-                <Link to='/user'>
-                
-				<Button icon="user" 
-                />
-                </Link>
-			</div>
             <Link to='/'>
 
 			<Header inverted>
