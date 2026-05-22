@@ -7,6 +7,7 @@ import PressureGauge from "./PressureGauge"
 import {
 	computePressureGaugeRangeInHg,
 	computePressureTrendHpa,
+	findPreviousPressureHpa,
 	formatInHg,
 	hPaToInHg,
 } from "../utils/pressure"
@@ -28,6 +29,7 @@ const Latest = (props) => {
 	let posttime
 	let pressureTrendNotice
 	let pressureGaugeRange
+	let previousPressureInHg
 
 	if (weather !== null && postList !== null) {
 		let time = new Date(weather.createdAt).toLocaleString("en-us")
@@ -45,6 +47,14 @@ const Latest = (props) => {
 			weather.pressure,
 			history24h
 		)
+		if (history24h != null) {
+			const previousPressure = findPreviousPressureHpa(
+				weather.createdAt,
+				history24h
+			)
+			previousPressureInHg =
+				previousPressure == null ? null : hPaToInHg(previousPressure)
+		}
 		humidityValue = Math.min(100, Math.max(0, Number(weather.humidity) || 0))
 		humidity = humidityValue.toFixed(1).replace(/\.0$/, "")
 		humidityStatus =
@@ -91,6 +101,7 @@ const Latest = (props) => {
 					<h4>Pressure</h4>
 					<PressureGauge
 						valueInHg={hPaToInHg(weather.pressure)}
+						previousValueInHg={previousPressureInHg}
 						minInHg={pressureGaugeRange.minInHg}
 						maxInHg={pressureGaugeRange.maxInHg}
 						label={`Barometric pressure ${pressure} inHg`}

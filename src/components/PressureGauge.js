@@ -9,6 +9,7 @@ const TICK_POSITIONS = [0, 0.25, 0.5, 0.75, 1]
  */
 export default function PressureGauge({
   valueInHg,
+  previousValueInHg,
   minInHg = 28.6,
   maxInHg = 30.9,
   label,
@@ -23,6 +24,14 @@ export default function PressureGauge({
   // Clamp value and normalize
   const clamped = Math.min(maxInHg, Math.max(minInHg, valueInHg))
   const t = maxInHg > minInHg ? (clamped - minInHg) / (maxInHg - minInHg) : 0.5
+  const previousClamped =
+    previousValueInHg == null
+      ? null
+      : Math.min(maxInHg, Math.max(minInHg, previousValueInHg))
+  const previousT =
+    previousClamped == null || maxInHg <= minInHg
+      ? null
+      : (previousClamped - minInHg) / (maxInHg - minInHg)
 
   // Gauge dimensions
   const cx = 100
@@ -42,6 +51,25 @@ export default function PressureGauge({
   const sy = cy
   const ex = cx + rTrack
   const ey = cy
+
+  const pointOnArc = (u, radius = rTrack) => {
+    const angle = Math.PI * (1 - u)
+    return {
+      x: cx + radius * Math.cos(angle),
+      y: cy - radius * Math.sin(angle),
+    }
+  }
+
+  const hasPressureChangeArc =
+    previousT != null && Math.abs(previousT - t) > 0.004
+  const pressureChangeArc = hasPressureChangeArc
+    ? (() => {
+        const start = pointOnArc(previousT)
+        const end = pointOnArc(t)
+        const sweepFlag = previousT < t ? 1 : 0
+        return `M ${start.x} ${start.y} A ${rTrack} ${rTrack} 0 0 ${sweepFlag} ${end.x} ${end.y}`
+      })()
+    : null
 
   // Tick angles
   const tickAngles = TICK_POSITIONS.map((u) => Math.PI * u)
@@ -104,6 +132,16 @@ export default function PressureGauge({
           strokeWidth="8"
           strokeLinecap="round"
         />
+        {pressureChangeArc && (
+          <path
+            d={pressureChangeArc}
+            fill="none"
+            stroke="#f5fffd"
+            strokeWidth="13"
+            strokeLinecap="round"
+            opacity="0.62"
+          />
+        )}
 
         {/* Ticks */}
         {tickAngles.map((ang, i) => {

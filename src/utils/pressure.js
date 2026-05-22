@@ -38,19 +38,34 @@ export function computePressureGaugeRangeInHg(currentHpa, history) {
 	}
 }
 
-/** Compare current reading to nearest older history point for trend arrow. */
-export function computePressureTrendHpa(currentHpa, currentCreatedAt, history) {
-	if (!history || !history.length || currentHpa == null) return null
+export function findPreviousPressureHpa(currentCreatedAt, history) {
+	if (!history || !history.length) return null
 	const curr = new Date(currentCreatedAt).getTime()
 	const older = [...history]
-		.filter((e) => new Date(e.createdAt).getTime() < curr)
+		.filter((e) => {
+			const createdAt = new Date(e.createdAt).getTime()
+			return (
+				createdAt < curr &&
+				e.pressure != null &&
+				Number.isFinite(Number(e.pressure))
+			)
+		})
 		.sort(
 			(a, b) =>
 				new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 		)[0]
-	if (!older || older.pressure == null) return null
 
-	const delta = Number(currentHpa) - Number(older.pressure)
+	if (!older || older.pressure == null) return null
+	return Number(older.pressure)
+}
+
+/** Compare current reading to nearest older history point for trend arrow. */
+export function computePressureTrendHpa(currentHpa, currentCreatedAt, history) {
+	if (!history || !history.length || currentHpa == null) return null
+	const previousPressure = findPreviousPressureHpa(currentCreatedAt, history)
+	if (previousPressure == null) return null
+
+	const delta = Number(currentHpa) - previousPressure
 	const epsHPa = 0.35
 	if (delta > epsHPa) return "rising"
 	if (delta < -epsHPa) return "falling"
