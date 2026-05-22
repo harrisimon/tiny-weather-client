@@ -60,14 +60,14 @@ export default function PressureGauge({
     }
   }
 
-  const hasPressureChangeArc =
+  const hasPressureChangeFill =
     previousT != null && Math.abs(previousT - t) > 0.004
-  const pressureChangeArc = hasPressureChangeArc
+  const pressureChangeFill = hasPressureChangeFill
     ? (() => {
         const start = pointOnArc(previousT)
         const end = pointOnArc(t)
         const sweepFlag = previousT < t ? 1 : 0
-        return `M ${start.x} ${start.y} A ${rTrack} ${rTrack} 0 0 ${sweepFlag} ${end.x} ${end.y}`
+        return `M ${cx} ${cy} L ${start.x} ${start.y} A ${rTrack} ${rTrack} 0 0 ${sweepFlag} ${end.x} ${end.y} Z`
       })()
     : null
 
@@ -117,6 +117,15 @@ export default function PressureGauge({
           </filter>
         </defs>
 
+        {pressureChangeFill && (
+          <path
+            d={pressureChangeFill}
+            fill="rgba(126,232,216,0.22)"
+            stroke="rgba(126,232,216,0.34)"
+            strokeWidth="1"
+          />
+        )}
+
         {/* Track */}
         <path
           d={`M ${sx} ${sy} A ${rTrack} ${rTrack} 0 0 1 ${ex} ${ey}`}
@@ -132,16 +141,6 @@ export default function PressureGauge({
           strokeWidth="8"
           strokeLinecap="round"
         />
-        {pressureChangeArc && (
-          <path
-            d={pressureChangeArc}
-            fill="none"
-            stroke="#f5fffd"
-            strokeWidth="13"
-            strokeLinecap="round"
-            opacity="0.62"
-          />
-        )}
 
         {/* Ticks */}
         {tickAngles.map((ang, i) => {
