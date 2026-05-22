@@ -13,7 +13,7 @@ const DEFAULT_PRESSURE_RANGE_INHG = {
 	maxInHg: 30.9,
 }
 
-const PRESSURE_RANGE_PADDING_INHG = 0.5
+const PRESSURE_RANGE_PADDING_INHG = 0.15
 
 export function computePressureGaugeRangeInHg(currentHpa, history) {
 	const values = []
