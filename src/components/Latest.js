@@ -137,17 +137,26 @@ const Latest = (props) => {
 
 			{showChart && (
 				<div
-					className="secondary-charts"
-					aria-label="Past 24 hour pressure and humidity charts"
+					className="metric-charts"
+					aria-label="Past 24 hour temperature, pressure, and humidity charts"
 				>
+					<Past24HoursChart
+						tempMeasure={tempMeasure}
+						historyWeather={history24h}
+						compact
+						mini
+						metric="temperature"
+					/>
 					<Past24HoursChart
 						historyWeather={history24h}
 						compact
+						mini
 						metric="pressure"
 					/>
 					<Past24HoursChart
 						historyWeather={history24h}
 						compact
+						mini
 						metric="humidity"
 					/>
 				</div>

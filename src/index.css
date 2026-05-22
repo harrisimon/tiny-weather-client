@@ -446,30 +446,32 @@ nav.ui.container {
 	padding: 0 0.2rem;
 }
 
-.secondary-charts {
+.metric-charts {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.25rem;
-	margin: 0.15rem 0 0.2rem;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.08rem;
+	margin: 0.05rem 0 0.12rem;
 }
 
-.secondary-charts .chart-container--compact {
+.metric-charts .chart-container--compact {
 	padding: 0;
 	min-width: 0;
 }
 
-.secondary-charts .chart-inner {
+.metric-charts .chart-inner {
 	min-width: 0;
 	overflow: hidden;
 }
 
-.secondary-charts .chart-title--compact {
-	font-size: 0.72rem !important;
+.metric-charts .chart-title--compact {
+	font-size: 0.64rem !important;
+	margin: 0 !important;
+	line-height: 1.05;
 }
 
-.secondary-charts .chart-canvas-wrap--compact {
-	height: 82px;
-	max-height: 16vh;
+.metric-charts .chart-canvas-wrap--compact {
+	height: 46px;
+	max-height: 8vh;
 }
 
 .chart-title--compact {
@@ -502,7 +504,7 @@ nav.ui.container {
 		height: 115px;
 	}
 
-	.secondary-charts .chart-canvas-wrap--compact {
-		height: 76px;
+	.metric-charts .chart-canvas-wrap--compact {
+		height: 42px;
 	}
 }

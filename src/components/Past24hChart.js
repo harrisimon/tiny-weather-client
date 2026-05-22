@@ -34,6 +34,7 @@ export default function Past24HoursChart({
 	historyWeather,
 	compact = false,
 	metric = "temperature",
+	mini = false,
 }) {
 	const metricConfig = CHART_METRICS[metric] || CHART_METRICS.temperature
 	const data = historyWeather?.filter((entry) => {
@@ -74,11 +75,11 @@ export default function Past24HoursChart({
 					aspectRatio: 2,
 			  }),
 		layout: compact
-			? { padding: { top: 4, bottom: 0, left: 0, right: 4 } }
+			? { padding: { top: mini ? 0 : 4, bottom: 0, left: 0, right: 4 } }
 			: undefined,
 		plugins: {
 			legend: {
-				display: true,
+				display: !mini,
 				position: compact ? "bottom" : "top",
 				labels: {
 					boxWidth: compact ? 10 : 40,
@@ -89,6 +90,7 @@ export default function Past24HoursChart({
 		},
 		scales: {
 			x: {
+				display: !mini,
 				ticks: {
 					maxRotation: compact ? 0 : 45,
 					minRotation: compact ? 0 : 45,
@@ -99,15 +101,15 @@ export default function Past24HoursChart({
 					},
 				},
 				grid: {
-					display: !compact,
+					display: !compact && !mini,
 				},
 			},
 			y: {
 				ticks: {
 					font: {
-						size: compact ? 8 : 10,
+						size: mini ? 7 : compact ? 8 : 10,
 					},
-					maxTicksLimit: compact ? 5 : undefined,
+					maxTicksLimit: mini ? 3 : compact ? 5 : undefined,
 				},
 				grid: {
 					color: compact ? "rgba(255,255,255,0.06)" : undefined,
@@ -119,7 +121,9 @@ export default function Past24HoursChart({
 	return (
 		<div
 			className={
-				compact ? "chart-container chart-container--compact" : "chart-container"
+				compact
+					? `chart-container chart-container--compact${mini ? " chart-container--mini" : ""}`
+					: "chart-container"
 			}
 		>
 			<div className="chart-inner">
