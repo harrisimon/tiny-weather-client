@@ -461,6 +461,25 @@ nav.ui.container {
 	grid-template-columns: minmax(0, 1fr);
 	gap: 0.08rem;
 	margin: 0.05rem 0 0.12rem;
+	max-height: 340px;
+	opacity: 1;
+	transform: translateX(0);
+	transition:
+		max-height 360ms ease,
+		opacity 260ms ease,
+		transform 360ms ease,
+		margin 360ms ease;
+	will-change: max-height, opacity, transform;
+	overflow: hidden;
+}
+
+.metric-charts--posts-open {
+	max-height: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	opacity: 0;
+	transform: translateX(-110%);
+	pointer-events: none;
 }
 
 .metric-charts .chart-container--compact {
@@ -505,6 +524,36 @@ nav.ui.container {
 	max-height: 26vh;
 }
 
+.new-posts-btn.ui.button {
+	margin: 0.1rem 0 0.35rem !important;
+	font-family: "Unbounded", cursive;
+	font-size: 0.95rem !important;
+	padding: 0.65rem 0.8rem !important;
+}
+
+.posts-panel {
+	max-height: 0;
+	opacity: 0;
+	transform: translateY(14px);
+	overflow: hidden;
+	transition:
+		max-height 360ms ease,
+		opacity 260ms ease,
+		transform 360ms ease;
+}
+
+.posts-panel--open {
+	max-height: min(360px, 45vh);
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.posts-panel .reviews--home {
+	height: min(340px, 42vh);
+	max-height: none;
+	margin-top: 0;
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
 	.chart-inner {
@@ -525,5 +574,13 @@ nav.ui.container {
 
 	.metric-charts .chart-container--temperature .chart-canvas-wrap--compact {
 		height: 88px;
+	}
+
+	.posts-panel--open {
+		max-height: min(320px, 40vh);
+	}
+
+	.posts-panel .reviews--home {
+		height: min(300px, 38vh);
 	}
 }

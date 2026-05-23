@@ -1,5 +1,5 @@
-import React from "react"
-import { Container, Card } from "semantic-ui-react"
+import React, { useState } from "react"
+import { Button, Container, Card } from "semantic-ui-react"
 
 import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
@@ -20,6 +20,13 @@ const Latest = (props) => {
 		showChart,
 		tempMeasure,
 	} = props
+	const [showPosts, setShowPosts] = useState(false)
+	const chartClassName = `metric-charts${
+		showPosts ? " metric-charts--posts-open" : ""
+	}`
+	const postsPanelClassName = `posts-panel${
+		showPosts ? " posts-panel--open" : ""
+	}`
 
 	let temp
 	let pressure
@@ -137,7 +144,7 @@ const Latest = (props) => {
 
 			{showChart && (
 				<div
-					className="metric-charts"
+					className={chartClassName}
 					aria-label="Past 24 hour temperature, pressure, and humidity charts"
 				>
 					<Past24HoursChart
@@ -167,16 +174,31 @@ const Latest = (props) => {
 				<div>{posttime}</div>
 			</div>
 
-			{postList && postList.length > 0 && <h3>Posts</h3>}
+			{postList && postList.length > 0 && (
+				<Button
+					className="new-posts-btn"
+					color="teal"
+					fluid
+					aria-expanded={showPosts}
+					onClick={() => setShowPosts((prev) => !prev)}
+				>
+					new posts
+				</Button>
+			)}
 
 			{postList && postList.length > 0 && (
-				<div className="reviews reviews--home">
-					<Card.Group centered>
-						<div className="reading">
-							<CardStack weather={weather} postList={postList} />
-						</div>
-					</Card.Group>
-				</div>
+				<section
+					className={postsPanelClassName}
+					aria-label="All posts"
+				>
+					<div className="reviews reviews--home">
+						<Card.Group centered>
+							<div className="reading">
+								<CardStack weather={weather} postList={postList} />
+							</div>
+						</Card.Group>
+					</div>
+				</section>
 			)}
 		</Container>
 	)
