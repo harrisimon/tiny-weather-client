@@ -422,6 +422,8 @@ nav.ui.container {
 	text-align: center;
 }
 .review-box {
+	font-size: 16px !important;
+	line-height: 1.45;
 	touch-action: manipulation;
 }
 .user-posts {
