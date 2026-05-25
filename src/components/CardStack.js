@@ -1,8 +1,9 @@
 import React from "react"
 import { Card } from "semantic-ui-react"
+import WeatherSnapshot from "./shared/WeatherSnapshot"
 
 const CardStack = (props) => {
-	const { postList } = props
+	const { postList, weather } = props
 	// const [cards, setCards] = useState(weather.reviews)
 	// console.log(weather, "in card stack")
 	let reviews
@@ -18,6 +19,9 @@ const CardStack = (props) => {
 				</Card.Content>
 				<Card.Content className="review-text">
 					{review.review}
+				</Card.Content>
+				<Card.Content>
+					<WeatherSnapshot weather={weather} />
 				</Card.Content>
 				<Card.Content extra>by: {review.author.email}</Card.Content>
 			</Card>

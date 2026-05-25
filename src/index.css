@@ -376,6 +376,41 @@ nav.ui.container {
 	text-align: justify;
 	font-family: "Unbounded", cursive;
 }
+
+.weather-snapshot {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.35rem;
+	text-align: center;
+}
+
+.weather-snapshot div {
+	min-width: 0;
+	padding: 0.35rem 0.25rem;
+	border-radius: 6px;
+	background: rgba(51, 51, 51, 0.06);
+}
+
+.weather-snapshot span,
+.weather-snapshot strong {
+	display: block;
+}
+
+.weather-snapshot span {
+	font-size: 0.62rem;
+	opacity: 0.65;
+	margin-bottom: 0.12rem;
+}
+
+.weather-snapshot strong {
+	font-size: 0.72rem;
+	line-height: 1.2;
+	overflow-wrap: anywhere;
+}
+
+.weather-snapshot__time {
+	grid-column: 1 / -1;
+}
 .reviews {
 	padding: 10px;
 	height: 275px;

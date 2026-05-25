@@ -3,6 +3,7 @@ import { getMyPosts, deletePost } from "../api/weather"
 import { useNavigate } from "react-router-dom"
 import { Button, Card, Container } from "semantic-ui-react"
 import UserBar from "./shared/UserBar"
+import WeatherSnapshot from "./shared/WeatherSnapshot"
 
 const UserPosts = (props) => {
 	const { user, msgAlert } = props
@@ -40,7 +41,7 @@ const UserPosts = (props) => {
 				setPosts(res.data.reviews)
 			})
 		}
-	}, [user])
+	}, [navigate, user])
 	
 
 	if (userPosts !== null) {
@@ -55,7 +56,9 @@ const UserPosts = (props) => {
 					</Card.Header>
 				</Card.Content>
 				<Card.Content>{post.reviews.review}</Card.Content>
-				<Card.Content>{((post.temperature)*(9 / 5) + 32)+'° F'}</Card.Content>
+				<Card.Content>
+					<WeatherSnapshot weather={post} />
+				</Card.Content>
 				<Card.Content><Button circular color="red" onClick={()=>removePost(index)}>Delete</Button></Card.Content>
 			</Card>
 		))
