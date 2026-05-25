@@ -14,7 +14,7 @@ const DEFAULT_PRESSURE_RANGE_INHG = {
 }
 
 const PRESSURE_GAUGE_SPAN_INHG = 0.75
-const PRESSURE_CHANGE_WINDOW_MS = 3 * 60 * 60 * 1000
+const PRESSURE_CHANGE_WINDOW_MS = 6 * 60 * 60 * 1000
 
 export function computePressureGaugeRangeInHg(
 	currentHpa,
