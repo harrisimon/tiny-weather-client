@@ -13,7 +13,9 @@ const DEFAULT_PRESSURE_RANGE_INHG = {
 	maxInHg: 30.9,
 }
 
-const PRESSURE_GAUGE_SPAN_INHG = 0.75
+const PRESSURE_GAUGE_PADDING_INHG = 0.08
+const PRESSURE_GAUGE_MIN_SPAN_INHG = 0.45
+const PRESSURE_GAUGE_MAX_SPAN_INHG = 0.85
 const PRESSURE_CHANGE_WINDOW_MS = 6 * 60 * 60 * 1000
 
 export function computePressureGaugeRangeInHg(
@@ -51,7 +53,14 @@ export function computePressureGaugeRangeInHg(
 	const low = Math.min(...values)
 	const high = Math.max(...values)
 	const center = (low + high) / 2
-	const halfSpan = PRESSURE_GAUGE_SPAN_INHG / 2
+	const span = Math.min(
+		PRESSURE_GAUGE_MAX_SPAN_INHG,
+		Math.max(
+			PRESSURE_GAUGE_MIN_SPAN_INHG,
+			high - low + PRESSURE_GAUGE_PADDING_INHG * 2
+		)
+	)
+	const halfSpan = span / 2
 
 	return {
 		minInHg: center - halfSpan,
