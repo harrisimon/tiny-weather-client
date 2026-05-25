@@ -10,12 +10,16 @@ const TICK_POSITIONS = [0, 0.25, 0.5, 0.75, 1]
 export default function PressureGauge({
   valueInHg,
   previousValueInHg,
+  changeStartValueInHg,
   minInHg = 28.6,
   maxInHg = 30.9,
   label,
 }) {
   const gradId = useRef(
     `pressureGaugeGrad-${Math.random().toString(36).slice(2, 11)}`
+  ).current
+  const changeFillGradId = useRef(
+    `pressureChangeFillGrad-${Math.random().toString(36).slice(2, 11)}`
   ).current
   const filterId = useRef(
     `needleGlow-${Math.random().toString(36).slice(2, 11)}`
@@ -24,10 +28,12 @@ export default function PressureGauge({
   // Clamp value and normalize
   const clamped = Math.min(maxInHg, Math.max(minInHg, valueInHg))
   const t = maxInHg > minInHg ? (clamped - minInHg) / (maxInHg - minInHg) : 0.5
+  const changeStart =
+    changeStartValueInHg == null ? previousValueInHg : changeStartValueInHg
   const previousClamped =
-    previousValueInHg == null
+    changeStart == null
       ? null
-      : Math.min(maxInHg, Math.max(minInHg, previousValueInHg))
+      : Math.min(maxInHg, Math.max(minInHg, changeStart))
   const previousT =
     previousClamped == null || maxInHg <= minInHg
       ? null
@@ -67,7 +73,11 @@ export default function PressureGauge({
         const start = pointOnArc(previousT)
         const end = pointOnArc(t)
         const sweepFlag = previousT < t ? 1 : 0
-        return `M ${cx} ${cy} L ${start.x} ${start.y} A ${rTrack} ${rTrack} 0 0 ${sweepFlag} ${end.x} ${end.y} Z`
+        return {
+          d: `M ${cx} ${cy} L ${start.x} ${start.y} A ${rTrack} ${rTrack} 0 0 ${sweepFlag} ${end.x} ${end.y} Z`,
+          start,
+          end,
+        }
       })()
     : null
 
@@ -100,6 +110,20 @@ export default function PressureGauge({
             <stop offset="50%" stopColor="#3db8a8" />
             <stop offset="100%" stopColor="#7ee8d8" />
           </linearGradient>
+          {pressureChangeFill && (
+            <linearGradient
+              id={changeFillGradId}
+              gradientUnits="userSpaceOnUse"
+              x1={pressureChangeFill.start.x}
+              y1={pressureChangeFill.start.y}
+              x2={pressureChangeFill.end.x}
+              y2={pressureChangeFill.end.y}
+            >
+              <stop offset="0%" stopColor="#2a8faf" stopOpacity="0.12" />
+              <stop offset="55%" stopColor="#3db8a8" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#7ee8d8" stopOpacity="0.34" />
+            </linearGradient>
+          )}
           <filter
             id={filterId}
             x="-50%"
@@ -119,8 +143,8 @@ export default function PressureGauge({
 
         {pressureChangeFill && (
           <path
-            d={pressureChangeFill}
-            fill="rgba(126,232,216,0.22)"
+            d={pressureChangeFill.d}
+            fill={`url(#${changeFillGradId})`}
             stroke="rgba(126,232,216,0.34)"
             strokeWidth="1"
           />
