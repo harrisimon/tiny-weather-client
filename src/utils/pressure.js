@@ -13,7 +13,7 @@ const DEFAULT_PRESSURE_RANGE_INHG = {
 	maxInHg: 30.9,
 }
 
-const PRESSURE_GAUGE_SPAN_INHG = 1.1
+const PRESSURE_GAUGE_SPAN_INHG = 0.75
 const PRESSURE_CHANGE_WINDOW_MS = 3 * 60 * 60 * 1000
 
 export function computePressureGaugeRangeInHg(
