@@ -5,6 +5,7 @@ import CardStack from "./CardStack"
 import Past24HoursChart from "./Past24hChart"
 import PressureGauge from "./PressureGauge"
 import {
+	computePressureChangeWindowHpa,
 	computePressureGaugeRangeInHg,
 	computePressureTrendHpa,
 	findPressureChangeStartHpa,
@@ -36,6 +37,7 @@ const Latest = (props) => {
 	let humidityStatus
 	let posttime
 	let pressureTrendNotice
+	let pressureHistoryNotice
 	let pressureGaugeRange
 	let previousPressureInHg
 	let pressureChangeStartInHg
@@ -52,11 +54,7 @@ const Latest = (props) => {
 			temp = <p className="temp">{weather.temperature}° C</p>
 		}
 		pressure = formatInHg(weather.pressure)
-		pressureGaugeRange = computePressureGaugeRangeInHg(
-			weather.pressure,
-			history24h,
-			weather.createdAt
-		)
+		pressureGaugeRange = computePressureGaugeRangeInHg()
 		if (history24h != null) {
 			const previousPressure = findPreviousPressureHpa(
 				weather.createdAt,
@@ -70,6 +68,16 @@ const Latest = (props) => {
 				previousPressure == null ? null : hPaToInHg(previousPressure)
 			pressureChangeStartInHg =
 				pressureChangeStart == null ? null : hPaToInHg(pressureChangeStart)
+			const pressureHistoryDelta = computePressureChangeWindowHpa(
+				weather.pressure,
+				weather.createdAt,
+				history24h
+			)
+			if (pressureHistoryDelta != null) {
+				const deltaInHg = hPaToInHg(pressureHistoryDelta)
+				const sign = deltaInHg > 0 ? "+" : ""
+				pressureHistoryNotice = `12h ${sign}${deltaInHg.toFixed(2)} inHg`
+			}
 		}
 		humidityValue = Math.min(100, Math.max(0, Number(weather.humidity) || 0))
 		humidity = humidityValue.toFixed(1).replace(/\.0$/, "")
@@ -130,6 +138,9 @@ const Latest = (props) => {
 					<p className="pressure-trend" aria-live="polite">
 						{pressureTrendNotice}
 					</p>
+					{pressureHistoryNotice && (
+						<p className="pressure-history">{pressureHistoryNotice}</p>
+					)}
 				</section>
 				<section className="dash-cell dash-humidity">
 					<h4>Humidity</h4>

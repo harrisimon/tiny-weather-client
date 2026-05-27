@@ -9,63 +9,14 @@ export function formatInHg(hPa, decimals = 2) {
 }
 
 const DEFAULT_PRESSURE_RANGE_INHG = {
-	minInHg: 28.6,
-	maxInHg: 30.9,
+	minInHg: 29.4,
+	maxInHg: 30.6,
 }
 
-const PRESSURE_GAUGE_PADDING_INHG = 0.08
-const PRESSURE_GAUGE_MIN_SPAN_INHG = 0.45
-const PRESSURE_GAUGE_MAX_SPAN_INHG = 0.85
 const PRESSURE_CHANGE_WINDOW_MS = 12 * 60 * 60 * 1000
 
-export function computePressureGaugeRangeInHg(
-	currentHpa,
-	history,
-	currentCreatedAt
-) {
-	const values = []
-	const currentTime = new Date(currentCreatedAt).getTime()
-	const hasCurrentTime = Number.isFinite(currentTime)
-
-	if (currentHpa != null && Number.isFinite(Number(currentHpa))) {
-		values.push(hPaToInHg(Number(currentHpa)))
-	}
-
-	if (history && history.length) {
-		history.forEach((entry) => {
-			const createdAt = new Date(entry.createdAt).getTime()
-			const isRecent =
-				!hasCurrentTime ||
-				(createdAt <= currentTime &&
-					createdAt >= currentTime - PRESSURE_CHANGE_WINDOW_MS)
-			if (
-				isRecent &&
-				entry.pressure != null &&
-				Number.isFinite(Number(entry.pressure))
-			) {
-				values.push(hPaToInHg(Number(entry.pressure)))
-			}
-		})
-	}
-
-	if (!values.length) return DEFAULT_PRESSURE_RANGE_INHG
-
-	const low = Math.min(...values)
-	const high = Math.max(...values)
-	const center = (low + high) / 2
-	const span = Math.min(
-		PRESSURE_GAUGE_MAX_SPAN_INHG,
-		Math.max(
-			PRESSURE_GAUGE_MIN_SPAN_INHG,
-			high - low + PRESSURE_GAUGE_PADDING_INHG * 2
-		)
-	)
-	const halfSpan = span / 2
-
-	return {
-		minInHg: center - halfSpan,
-		maxInHg: center + halfSpan,
-	}
+export function computePressureGaugeRangeInHg() {
+	return DEFAULT_PRESSURE_RANGE_INHG
 }
 
 export function findPreviousPressureHpa(currentCreatedAt, history) {
@@ -112,6 +63,13 @@ export function findPressureChangeStartHpa(currentCreatedAt, history) {
 
 	if (recent && recent.pressure != null) return Number(recent.pressure)
 	return findPreviousPressureHpa(currentCreatedAt, history)
+}
+
+export function computePressureChangeWindowHpa(currentHpa, currentCreatedAt, history) {
+	if (currentHpa == null) return null
+	const startPressure = findPressureChangeStartHpa(currentCreatedAt, history)
+	if (startPressure == null) return null
+	return Number(currentHpa) - startPressure
 }
 
 /** Compare current reading to nearest older history point for trend arrow. */

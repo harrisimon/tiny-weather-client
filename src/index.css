@@ -309,6 +309,13 @@ p {
 	line-height: 1.25;
 }
 
+.pressure-history {
+	font-size: clamp(0.62rem, 2.5vw, 0.76rem);
+	margin: 0.05rem 0 0;
+	opacity: 0.72;
+	line-height: 1.2;
+}
+
 .floating-buttons {
 	position: fixed;
 	left: 0;
