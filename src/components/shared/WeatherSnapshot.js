@@ -1,5 +1,6 @@
 import React from "react"
 import { formatInHg } from "../../utils/pressure"
+import { formatTimestamp } from "../../utils/time"
 
 const formatHumidity = (humidity) => {
 	const value = Number(humidity)
@@ -22,9 +23,7 @@ const WeatherSnapshot = ({ weather }) => {
 			? null
 			: `${formatInHg(weather.pressure)} inHg`
 	const humidity = formatHumidity(weather.humidity)
-	const readingTime = weather.createdAt
-		? new Date(weather.createdAt).toLocaleString("en-us")
-		: null
+	const readingTime = formatTimestamp(weather)
 
 	return (
 		<div className="weather-snapshot">

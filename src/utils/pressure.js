@@ -1,3 +1,5 @@
+import { getTimestampMs } from "./time"
+
 /** Meteorological hectopascal (hPa === mbar) to inches of mercury. */
 export function hPaToInHg(hPa) {
 	return hPa * 0.029529983071445
@@ -21,20 +23,19 @@ export function computePressureGaugeRangeInHg() {
 
 export function findPreviousPressureHpa(currentCreatedAt, history) {
 	if (!history || !history.length) return null
-	const curr = new Date(currentCreatedAt).getTime()
+	const curr = getTimestampMs(currentCreatedAt)
+	if (!Number.isFinite(curr)) return null
 	const older = [...history]
 		.filter((e) => {
-			const createdAt = new Date(e.createdAt).getTime()
+			const createdAt = getTimestampMs(e)
 			return (
+				createdAt != null &&
 				createdAt < curr &&
 				e.pressure != null &&
 				Number.isFinite(Number(e.pressure))
 			)
 		})
-		.sort(
-			(a, b) =>
-				new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-		)[0]
+		.sort((a, b) => getTimestampMs(b) - getTimestampMs(a))[0]
 
 	if (!older || older.pressure == null) return null
 	return Number(older.pressure)
@@ -42,30 +43,32 @@ export function findPreviousPressureHpa(currentCreatedAt, history) {
 
 export function findPressureChangeStartHpa(currentCreatedAt, history) {
 	if (!history || !history.length) return null
-	const curr = new Date(currentCreatedAt).getTime()
+	const curr = getTimestampMs(currentCreatedAt)
 	if (!Number.isFinite(curr)) return null
 	const start = curr - PRESSURE_CHANGE_WINDOW_MS
 
 	const recent = [...history]
 		.filter((e) => {
-			const createdAt = new Date(e.createdAt).getTime()
+			const createdAt = getTimestampMs(e)
 			return (
+				createdAt != null &&
 				createdAt < curr &&
 				createdAt >= start &&
 				e.pressure != null &&
 				Number.isFinite(Number(e.pressure))
 			)
 		})
-		.sort(
-			(a, b) =>
-				new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-		)[0]
+		.sort((a, b) => getTimestampMs(a) - getTimestampMs(b))[0]
 
 	if (recent && recent.pressure != null) return Number(recent.pressure)
 	return findPreviousPressureHpa(currentCreatedAt, history)
 }
 
-export function computePressureChangeWindowHpa(currentHpa, currentCreatedAt, history) {
+export function computePressureChangeWindowHpa(
+	currentHpa,
+	currentCreatedAt,
+	history,
+) {
 	if (currentHpa == null) return null
 	const startPressure = findPressureChangeStartHpa(currentCreatedAt, history)
 	if (startPressure == null) return null

@@ -2,6 +2,7 @@ import React from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
 import { hPaToInHg } from "../utils/pressure"
+import { parseTimestamp } from "../utils/time"
 
 const CHART_METRICS = {
 	temperature: {
@@ -47,16 +48,21 @@ export default function Past24HoursChart({
 	if (data.length === 0) return <p>No data available</p>
 
 	const chartData = {
-		labels: data.map((entry) =>
-			new Date(entry.createdAt).toLocaleTimeString([], {
-				hour: "2-digit",
-				minute: "2-digit",
-			})
-		),
+		labels: data.map((entry) => {
+			const parsed = parseTimestamp(entry)
+			return parsed
+				? parsed.toLocaleTimeString([], {
+						hour: "2-digit",
+						minute: "2-digit",
+					})
+				: ""
+		}),
 		datasets: [
 			{
 				label: metricConfig.label(tempMeasure),
-				data: data.map((entry) => metricConfig.value(entry, tempMeasure)),
+				data: data.map((entry) =>
+					metricConfig.value(entry, tempMeasure),
+				),
 				borderColor: metricConfig.borderColor,
 				backgroundColor: metricConfig.backgroundColor,
 				borderWidth: 2,
@@ -73,7 +79,7 @@ export default function Past24HoursChart({
 			? {}
 			: {
 					aspectRatio: 2,
-			  }),
+				}),
 		layout: compact
 			? { padding: { top: mini ? 0 : 4, bottom: 0, left: 0, right: 4 } }
 			: undefined,
@@ -135,12 +141,20 @@ export default function Past24HoursChart({
 			<div className="chart-inner">
 				<h2
 					className={
-						compact ? "chart-title chart-title--compact" : "chart-title"
+						compact
+							? "chart-title chart-title--compact"
+							: "chart-title"
 					}
 				>
 					{metricConfig.title}
 				</h2>
-				<div className={compact ? "chart-canvas-wrap chart-canvas-wrap--compact" : "chart-canvas-wrap"}>
+				<div
+					className={
+						compact
+							? "chart-canvas-wrap chart-canvas-wrap--compact"
+							: "chart-canvas-wrap"
+					}
+				>
 					<Line data={chartData} options={chartOptions} />
 				</div>
 			</div>

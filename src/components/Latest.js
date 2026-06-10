@@ -13,15 +13,10 @@ import {
 	formatInHg,
 	hPaToInHg,
 } from "../utils/pressure"
+import { formatTimestamp, getTimestampMs } from "../utils/time"
 
 const Latest = (props) => {
-	const {
-		weather,
-		history24h,
-		postList,
-		showChart,
-		tempMeasure,
-	} = props
+	const { weather, history24h, postList, showChart, tempMeasure } = props
 	const [showPosts, setShowPosts] = useState(false)
 	const chartClassName = `metric-charts${
 		showPosts ? " metric-charts--posts-open" : ""
@@ -43,7 +38,9 @@ const Latest = (props) => {
 	let pressureChangeStartInHg
 
 	if (weather !== null && postList !== null) {
-		let time = new Date(weather.createdAt).toLocaleString("en-us")
+		const timestamp = formatTimestamp(weather)
+		let time = timestamp || "Unknown"
+		const currentTimestampMs = getTimestampMs(weather)
 		if (tempMeasure === true) {
 			temp = (
 				<p className="temp">
@@ -57,21 +54,23 @@ const Latest = (props) => {
 		pressureGaugeRange = computePressureGaugeRangeInHg()
 		if (history24h != null) {
 			const previousPressure = findPreviousPressureHpa(
-				weather.createdAt,
-				history24h
+				currentTimestampMs,
+				history24h,
 			)
 			const pressureChangeStart = findPressureChangeStartHpa(
-				weather.createdAt,
-				history24h
+				currentTimestampMs,
+				history24h,
 			)
 			previousPressureInHg =
 				previousPressure == null ? null : hPaToInHg(previousPressure)
 			pressureChangeStartInHg =
-				pressureChangeStart == null ? null : hPaToInHg(pressureChangeStart)
+				pressureChangeStart == null
+					? null
+					: hPaToInHg(pressureChangeStart)
 			const pressureHistoryDelta = computePressureChangeWindowHpa(
 				weather.pressure,
-				weather.createdAt,
-				history24h
+				currentTimestampMs,
+				history24h,
 			)
 			if (pressureHistoryDelta != null) {
 				const deltaInHg = hPaToInHg(pressureHistoryDelta)
@@ -79,10 +78,17 @@ const Latest = (props) => {
 				pressureHistoryNotice = `12h ${sign}${deltaInHg.toFixed(2)} inHg`
 			}
 		}
-		humidityValue = Math.min(100, Math.max(0, Number(weather.humidity) || 0))
+		humidityValue = Math.min(
+			100,
+			Math.max(0, Number(weather.humidity) || 0),
+		)
 		humidity = humidityValue.toFixed(1).replace(/\.0$/, "")
 		humidityStatus =
-			humidityValue < 30 ? "Dry" : humidityValue < 60 ? "Comfortable" : "Humid"
+			humidityValue < 30
+				? "Dry"
+				: humidityValue < 60
+					? "Comfortable"
+					: "Humid"
 		posttime = <p>{time}</p>
 
 		if (history24h == null) {
@@ -90,8 +96,8 @@ const Latest = (props) => {
 		} else {
 			const dir = computePressureTrendHpa(
 				weather.pressure,
-				weather.createdAt,
-				history24h
+				currentTimestampMs,
+				history24h,
 			)
 			const word = {
 				rising: "Rising",
@@ -132,14 +138,15 @@ const Latest = (props) => {
 						label={`Barometric pressure ${pressure} inHg`}
 					/>
 					<div className="reading reading--pressure-value">
-						{pressure}{" "}
-						<span className="pressure-unit">inHg</span>
+						{pressure} <span className="pressure-unit">inHg</span>
 					</div>
 					<p className="pressure-trend" aria-live="polite">
 						{pressureTrendNotice}
 					</p>
 					{pressureHistoryNotice && (
-						<p className="pressure-history">{pressureHistoryNotice}</p>
+						<p className="pressure-history">
+							{pressureHistoryNotice}
+						</p>
 					)}
 				</section>
 				<section className="dash-cell dash-humidity">
@@ -208,14 +215,14 @@ const Latest = (props) => {
 			)}
 
 			{postList && postList.length > 0 && (
-				<section
-					className={postsPanelClassName}
-					aria-label="All posts"
-				>
+				<section className={postsPanelClassName} aria-label="All posts">
 					<div className="reviews reviews--home">
 						<Card.Group centered>
 							<div className="reading">
-								<CardStack weather={weather} postList={postList} />
+								<CardStack
+									weather={weather}
+									postList={postList}
+								/>
 							</div>
 						</Card.Group>
 					</div>
