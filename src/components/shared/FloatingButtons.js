@@ -105,8 +105,7 @@ const FloatingButtons = (props) => {
 					<a href="https://www.adafruit.com/product/2652">
 						BME 280 sensor
 					</a>
-					. Currently the humity sensor seems to be taking
-					incorrect readings.
+					
 					<br />
 					More features coming soon...
 				</Modal.Content>
