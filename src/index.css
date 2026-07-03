@@ -552,7 +552,7 @@ nav.ui.container {
 
 .metric-charts .chart-canvas-wrap--compact {
 	height: 60px;
-	max-height: 9vh;
+	max-height: 10vh;
 }
 
 .chart-title--compact {
