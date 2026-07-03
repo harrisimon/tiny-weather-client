@@ -11,7 +11,7 @@ const Home = (props) => {
 	const [refresh, setRefresh] = useState(false)
 	const [weather, setWeather] = useState(null)
 	const [history24h, setHistory24h] = useState(null)
-	const [postList, setPostList] = useState(null)
+	const [postList, setPostList] = useState([])
 	const [showChart, setShowChart] = useState(true)
 
 	// Get tempMeasure from localStorage, default to true (Fahrenheit)
@@ -51,9 +51,11 @@ const Home = (props) => {
 	}, [])
 
 	const loadInfo = (res) => {
-		// console.log("load info res reviews", res.data.weather[0].reviews)
 		setWeather(res.data.weather[0])
-		setPostList(res.data.weather[0].reviews.slice(0).reverse())
+		const reviews = res.data.weather[0].reviews
+		if (reviews && reviews.length > 0) {
+			setPostList(reviews.slice(0).reverse())
+		}
 	}
 
 	const fetchWeatherData = async () => {

@@ -240,7 +240,7 @@ const Latest = (props) => {
 					aria-expanded={showPosts}
 					onClick={() => setShowPosts((prev) => !prev)}
 				>
-					New posts
+					{showPosts ? "Charts" : "New posts"}
 				</Button>
 			)}
 
