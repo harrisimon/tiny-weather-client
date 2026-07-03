@@ -88,10 +88,10 @@ p {
 	padding-right: 10px !important;
 }
 
-/* Temp | Pressure | Humidity — one band, aligned labels + values */
+/* Temp | Pressure | Humidity | Dew Point — balanced grid */
 .dashboard-overview {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
 	gap: 0.2rem 0.35rem;
 	align-items: start;
 	padding: 0.15rem 0 0.25rem;
@@ -206,7 +206,7 @@ p {
 @media (max-width: 500px) {
 	.dashboard-overview {
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto auto;
+		grid-template-rows: auto auto auto;
 	}
 
 	.dash-temp {
@@ -220,6 +220,10 @@ p {
 	.dash-humidity {
 		grid-column: 2;
 		justify-self: stretch;
+	}
+
+	.dash-dewpoint {
+		grid-column: 1 / -1;
 	}
 
 	.humidity-meter {
@@ -364,6 +368,20 @@ nav.ui.container {
 	line-height: 1.25;
 }
 
+.dash-dewpoint-reading .dewpoint {
+	font-size: clamp(1.4rem, 6vmin, 2.2rem);
+	font-weight: 600;
+	line-height: 1.1;
+	margin: 0.2rem 0 0;
+}
+
+.dewpoint-status {
+	font-size: clamp(0.72rem, 2.8vw, 0.85rem);
+	margin: 0.15rem 0 0;
+	opacity: 0.92;
+	line-height: 1.25;
+}
+
 .chart-toggle-btn.ui.button {
 	margin: 0.35rem 0 0.25rem !important;
 	padding: 0.55rem 0.75rem !important;
@@ -386,7 +404,7 @@ nav.ui.container {
 
 .weather-snapshot {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.35rem;
 	text-align: center;
 }
@@ -502,7 +520,7 @@ nav.ui.container {
 
 .metric-charts {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr);
+	grid-template-columns: 1fr 1fr;
 	gap: 0.08rem;
 	margin: 0.05rem 0 0.12rem;
 	max-height: 340px;
@@ -545,11 +563,6 @@ nav.ui.container {
 .metric-charts .chart-canvas-wrap--compact {
 	height: 60px;
 	max-height: 11vh;
-}
-
-.metric-charts .chart-container--temperature .chart-canvas-wrap--compact {
-	height: 92px;
-	max-height: 15vh;
 }
 
 .chart-title--compact {
@@ -614,10 +627,6 @@ nav.ui.container {
 
 	.metric-charts .chart-canvas-wrap--compact {
 		height: 54px;
-	}
-
-	.metric-charts .chart-container--temperature .chart-canvas-wrap--compact {
-		height: 88px;
 	}
 
 	.posts-panel--open {
