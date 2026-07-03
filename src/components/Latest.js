@@ -160,6 +160,17 @@ const Latest = (props) => {
 						</p>
 					)}
 				</section>
+					{dewPointDisplay && (
+					<section className="dash-cell dash-dewpoint">
+						<h4>Dew Point</h4>
+						<div className="reading dash-dewpoint-reading">
+							<p className="dewpoint">{dewPointDisplay}</p>
+						</div>
+						{dewPointComfort && (
+							<p className="dewpoint-status">{dewPointComfort}</p>
+						)}
+					</section>
+				)}
 				<section className="dash-cell dash-humidity">
 					<h4>Humidity</h4>
 					<div
@@ -179,17 +190,7 @@ const Latest = (props) => {
 					</div>
 					<p className="humidity-status">{humidityStatus}</p>
 				</section>
-				{dewPointDisplay && (
-					<section className="dash-cell dash-dewpoint">
-						<h4>Dew Point</h4>
-						<div className="reading dash-dewpoint-reading">
-							<p className="dewpoint">{dewPointDisplay}</p>
-						</div>
-						{dewPointComfort && (
-							<p className="dewpoint-status">{dewPointComfort}</p>
-						)}
-					</section>
-				)}
+			
 			</div>
 
 			{showChart && (
