@@ -510,7 +510,7 @@ nav.ui.container {
 
 .metric-charts {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 0.08rem;
 	margin: 0.05rem 0 0.12rem;
 	max-height: 340px;
