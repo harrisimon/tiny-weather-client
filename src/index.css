@@ -512,7 +512,7 @@ nav.ui.container {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	gap: 0.08rem;
-	margin: 0.05rem 0 0;
+	margin: 0.5rem 0 0;
 	max-height: 600px;
 	opacity: 1;
 	transform: translateX(0);
