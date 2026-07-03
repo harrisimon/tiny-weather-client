@@ -551,7 +551,7 @@ nav.ui.container {
 }
 
 .metric-charts .chart-canvas-wrap--compact {
-	height: 54px;
+	height: 60px;
 	max-height: 9vh;
 }
 
