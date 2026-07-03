@@ -154,11 +154,11 @@ const Latest = (props) => {
 					<p className="pressure-trend" aria-live="polite">
 						{pressureTrendNotice}
 					</p>
-					{pressureHistoryNotice && (
+					{/* {pressureHistoryNotice && (
 						<p className="pressure-history">
 							{pressureHistoryNotice}
 						</p>
-					)}
+					)} */}
 				</section>
 					{dewPointDisplay && (
 					<section className="dash-cell dash-dewpoint">
