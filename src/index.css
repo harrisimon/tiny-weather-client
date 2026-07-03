@@ -92,9 +92,9 @@ p {
 .dashboard-overview {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	gap: 0.2rem 0.35rem;
+	gap: 0.1rem 0.35rem;
 	align-items: start;
-	padding: 0.15rem 0 0.25rem;
+	padding: 0.1rem 0 0.15rem;
 	overflow: visible;
 }
 
@@ -193,7 +193,7 @@ p {
 	text-align: center;
 	font-size: 0.72rem;
 	line-height: 1.35;
-	margin: 0.2rem 0 0.35rem;
+	margin: 0.1rem 0 0.15rem;
 	opacity: 0.88;
 }
 
@@ -512,8 +512,8 @@ nav.ui.container {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	gap: 0.08rem;
-	margin: 0.05rem 0 0.12rem;
-	max-height: 340px;
+	margin: 0.05rem 0 0;
+	max-height: 500px;
 	opacity: 1;
 	transform: translateX(0);
 	transition:
