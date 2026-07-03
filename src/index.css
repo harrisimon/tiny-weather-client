@@ -139,8 +139,8 @@ p {
 
 .humidity-meter {
 	width: 100%;
-	max-width: min(170px, 40vw);
-	height: 62px;
+	max-width: min(120px, 30vw);
+	height: 50px;
 	margin: 0.25rem auto 0;
 	display: flex;
 	align-items: flex-end;
@@ -149,10 +149,10 @@ p {
 
 .humidity-meter__track {
 	position: relative;
-	width: 46px;
-	height: 58px;
+	width: 36px;
+	height: 46px;
 	border: 2px solid rgba(255, 255, 255, 0.26);
-	border-radius: 23px 23px 13px 13px;
+	border-radius: 18px 18px 10px 10px;
 	overflow: hidden;
 	background:
 		linear-gradient(
@@ -217,13 +217,13 @@ p {
 	}
 
 	.humidity-meter {
-		max-width: min(210px, 46vw);
-		height: 72px;
+		max-width: min(120px, 30vw);
+		height: 50px;
 	}
 
 	.humidity-meter__track {
-		width: 52px;
-		height: 68px;
+		width: 36px;
+		height: 46px;
 	}
 }
 .title {
@@ -272,18 +272,18 @@ p {
 
 .pressure-gauge-wrap {
 	width: 100%;
-	max-width: min(210px, 46vw);
+	max-width: min(140px, 30vw);
 	margin: 0.05rem auto 0;
 	display: flex;
 	justify-content: center;
 	overflow: visible;
 	box-sizing: content-box;
-	padding: 6px 4px 2px;
+	padding: 4px 2px 2px;
 }
 
 .pressure-gauge-svg {
 	width: 100%;
-	max-width: 200px;
+	max-width: 130px;
 	height: auto;
 	display: block;
 	overflow: visible;
@@ -359,9 +359,9 @@ nav.ui.container {
 }
 
 .dash-dewpoint-reading .dewpoint {
-	font-size: clamp(1.4rem, 6vmin, 2.2rem);
+	font-size: clamp(1rem, 4vw, 1.25rem);
 	font-weight: 600;
-	line-height: 1.1;
+	line-height: 1.2;
 	margin: 0.2rem 0 0;
 }
 
@@ -551,8 +551,8 @@ nav.ui.container {
 }
 
 .metric-charts .chart-canvas-wrap--compact {
-	height: 60px;
-	max-height: 11vh;
+	height: 46px;
+	max-height: 8vh;
 }
 
 .chart-title--compact {
@@ -616,7 +616,7 @@ nav.ui.container {
 	}
 
 	.metric-charts .chart-canvas-wrap--compact {
-		height: 54px;
+		height: 42px;
 	}
 
 	.posts-panel--open {
