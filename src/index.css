@@ -93,7 +93,7 @@ p {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 0.2rem 0.35rem;
-	align-items: start;
+	align-items: center;
 	padding: 0.15rem 0 0.25rem;
 	overflow: visible;
 }
@@ -272,7 +272,7 @@ p {
 
 .pressure-gauge-wrap {
 	width: 100%;
-	max-width: min(140px, 30vw);
+	max-width: min(110px, 28vw);
 	margin: 0.05rem auto 0;
 	display: flex;
 	justify-content: center;
@@ -283,7 +283,7 @@ p {
 
 .pressure-gauge-svg {
 	width: 100%;
-	max-width: 130px;
+	max-width: 100px;
 	height: auto;
 	display: block;
 	overflow: visible;
