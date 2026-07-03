@@ -188,7 +188,7 @@ const Latest = (props) => {
 							<span className="humidity-unit">%</span>
 						</p>
 					</div>
-					<p className="humidity-status">{humidityStatus}</p>
+					{/* <p className="humidity-status">{humidityStatus}</p> */}
 				</section>
 			
 			</div>
