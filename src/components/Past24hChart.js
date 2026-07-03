@@ -2,6 +2,7 @@ import React from "react"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
 import { hPaToInHg } from "../utils/pressure"
+import { computeDewPointC } from "../utils/dewpoint"
 import { parseTimestamp } from "../utils/time"
 
 const CHART_METRICS = {
@@ -28,6 +29,20 @@ const CHART_METRICS = {
 		borderColor: "#7ee8d8",
 		backgroundColor: "rgba(126,232,216,0.16)",
 	},
+	dewpoint: {
+		title: "Past 24 Hours Dew Point",
+		label: (tempMeasure) =>
+			tempMeasure ? "Dew Point (°F)" : "Dew Point (°C)",
+		value: (entry, tempMeasure) => {
+			const dp = computeDewPointC(entry.temperature, entry.humidity)
+			if (dp == null) return null
+			return tempMeasure
+				? Math.round(dp * (9 / 5) + 32)
+				: Math.round(dp * 10) / 10
+		},
+		borderColor: "#a8d8ea",
+		backgroundColor: "rgba(168,216,234,0.16)",
+	},
 }
 
 export default function Past24HoursChart({
@@ -39,6 +54,14 @@ export default function Past24HoursChart({
 }) {
 	const metricConfig = CHART_METRICS[metric] || CHART_METRICS.temperature
 	const data = historyWeather?.filter((entry) => {
+		if (metric === "dewpoint") {
+			return (
+				entry.temperature != null &&
+				Number.isFinite(Number(entry.temperature)) &&
+				entry.humidity != null &&
+				Number.isFinite(Number(entry.humidity))
+			)
+		}
 		const key = metric === "temperature" ? "temperature" : metric
 		return entry[key] != null && Number.isFinite(Number(entry[key]))
 	})

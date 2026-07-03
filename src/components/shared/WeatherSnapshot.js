@@ -1,5 +1,6 @@
 import React from "react"
 import { formatInHg } from "../../utils/pressure"
+import { computeDewPointC } from "../../utils/dewpoint"
 import { formatTimestamp } from "../../utils/time"
 
 const formatHumidity = (humidity) => {
@@ -23,6 +24,9 @@ const WeatherSnapshot = ({ weather }) => {
 			? null
 			: `${formatInHg(weather.pressure)} inHg`
 	const humidity = formatHumidity(weather.humidity)
+	const dewPoint = computeDewPointC(weather.temperature, weather.humidity)
+	const dewPointDisplay =
+		dewPoint != null ? `${Math.round(dewPoint * (9 / 5) + 32)}° F` : null
 	const readingTime = formatTimestamp(weather)
 
 	return (
@@ -43,6 +47,12 @@ const WeatherSnapshot = ({ weather }) => {
 				<div>
 					<span>Humidity</span>
 					<strong>{humidity}%</strong>
+				</div>
+			)}
+			{dewPointDisplay && (
+				<div>
+					<span>Dew Point</span>
+					<strong>{dewPointDisplay}</strong>
 				</div>
 			)}
 			{readingTime && (

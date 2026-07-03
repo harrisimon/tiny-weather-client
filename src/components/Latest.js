@@ -13,6 +13,7 @@ import {
 	formatInHg,
 	hPaToInHg,
 } from "../utils/pressure"
+import { computeDewPointC, dewPointComfortLabel } from "../utils/dewpoint"
 import { formatTimestamp, getTimestampMs } from "../utils/time"
 
 const Latest = (props) => {
@@ -30,6 +31,9 @@ const Latest = (props) => {
 	let humidity
 	let humidityValue
 	let humidityStatus
+	let dewPoint
+	let dewPointDisplay
+	let dewPointComfort
 	let posttime
 	let pressureTrendNotice
 	let pressureHistoryNotice
@@ -89,6 +93,13 @@ const Latest = (props) => {
 				: humidityValue < 60
 					? "Comfortable"
 					: "Humid"
+		dewPoint = computeDewPointC(weather.temperature, weather.humidity)
+		if (dewPoint != null) {
+			dewPointDisplay = tempMeasure
+				? `${Math.round(dewPoint * (9 / 5) + 32)}° F`
+				: `${Math.round(dewPoint * 10) / 10}° C`
+			dewPointComfort = dewPointComfortLabel(dewPoint)
+		}
 		posttime = <p>{time}</p>
 
 		if (history24h == null) {
@@ -168,12 +179,23 @@ const Latest = (props) => {
 					</div>
 					<p className="humidity-status">{humidityStatus}</p>
 				</section>
+				{dewPointDisplay && (
+					<section className="dash-cell dash-dewpoint">
+						<h4>Dew Point</h4>
+						<div className="reading dash-dewpoint-reading">
+							<p className="dewpoint">{dewPointDisplay}</p>
+						</div>
+						{dewPointComfort && (
+							<p className="dewpoint-status">{dewPointComfort}</p>
+						)}
+					</section>
+				)}
 			</div>
 
 			{showChart && (
 				<div
 					className={chartClassName}
-					aria-label="Past 24 hour temperature, pressure, and humidity charts"
+					aria-label="Past 24 hour temperature, pressure, humidity, and dew point charts"
 				>
 					<Past24HoursChart
 						tempMeasure={tempMeasure}
@@ -193,6 +215,13 @@ const Latest = (props) => {
 						compact
 						mini
 						metric="humidity"
+					/>
+					<Past24HoursChart
+						tempMeasure={tempMeasure}
+						historyWeather={history24h}
+						compact
+						mini
+						metric="dewpoint"
 					/>
 				</div>
 			)}
