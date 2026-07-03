@@ -88,14 +88,18 @@ p {
 	padding-right: 10px !important;
 }
 
-/* Temp | Pressure | Humidity | Dew Point — balanced grid */
+/* Temp on top, Pressure | Humidity | Dew Point below */
 .dashboard-overview {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
+	grid-template-columns: 1fr 1fr 1fr;
 	gap: 0.2rem 0.35rem;
 	align-items: start;
 	padding: 0.15rem 0 0.25rem;
 	overflow: visible;
+}
+
+.dash-temp {
+	grid-column: 1 / -1;
 }
 
 .dashboard-overview h4 {
@@ -205,24 +209,10 @@ p {
 
 @media (max-width: 500px) {
 	.dashboard-overview {
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto auto auto;
+		grid-template-columns: 1fr 1fr 1fr;
 	}
 
 	.dash-temp {
-		grid-column: 1 / -1;
-	}
-
-	.dash-pressure {
-		grid-column: 1;
-	}
-
-	.dash-humidity {
-		grid-column: 2;
-		justify-self: stretch;
-	}
-
-	.dash-dewpoint {
 		grid-column: 1 / -1;
 	}
 
