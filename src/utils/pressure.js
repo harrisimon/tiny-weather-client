@@ -12,7 +12,7 @@ export function formatInHg(hPa, decimals = 2) {
 
 const DEFAULT_PRESSURE_RANGE_INHG = {
 	minInHg: 29.0,
-	maxInHg: 30.6,
+	maxInHg: 30.5,
 }
 
 const PRESSURE_CHANGE_WINDOW_MS = 12 * 60 * 60 * 1000

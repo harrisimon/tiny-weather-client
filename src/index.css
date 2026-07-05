@@ -172,7 +172,7 @@ p {
 	height: var(--humidity-level);
 	min-height: 3px;
 	background: linear-gradient(180deg, #7ee8d8 0%, #2a8faf 100%);
-	border-radius: 20px 20px 10px 10px;
+	border-radius: 16px 16px 8px 8px;
 	transition: height 320ms ease;
 }
 
